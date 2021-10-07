@@ -1,0 +1,16 @@
+@import './ColorScheme.css';
+@import '../index.css';
+
+.conversationBlade-grid-container {
+    display: grid;
+    grid-template-columns: 400px auto;
+    grid-gap: 0px;
+}
+
+.conversationBlade-grid-container > div {
+    background-color: var(--secondary);
+    text-align: center;
+    padding: 0px;
+    height: auto;
+}
+

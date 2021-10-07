@@ -1,0 +1,13 @@
+@import './ColorScheme.css';
+@import '../index.css';
+
+.chatPanel {
+    width: 700px;
+    background: var(--background) !important;
+}
+
+.loadingPrompt {
+    color: var(--primary-light);
+    font-size: 36px;
+    margin-top: 125px;
+}

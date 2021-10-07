@@ -1,0 +1,34 @@
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+    align-content: start;
+}
+
+.link-button {
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+    /*optional*/
+    font-family: arial, sans-serif;
+    /*input has OS specific font-family*/
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.list-item:hover {
+    background: #d3d3d3;
+}
+
+.list-item {
+    padding-left: 20px;
+}
+
+

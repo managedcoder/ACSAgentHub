@@ -1,0 +1,18 @@
+@import './ColorScheme.css';
+
+.content-grid-container {
+    display: grid;
+    grid-template-columns: 65px auto;
+    grid-gap: 0px;
+    padding: 0px;
+}
+
+.content {
+    text-align: center !important;
+    align-content: center !important;
+    height: var(--contentAreaHeight) !important;
+    min-height: var(--contentAreaHeight) !important;
+    background-color: var(--background);
+}
+
+

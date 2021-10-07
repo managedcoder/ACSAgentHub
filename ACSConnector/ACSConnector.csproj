@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PackageId>ACSConnector</PackageId>
+	<Description>This package integrates with a ready-made agent hub solution built on the Azure Communication Service that allows you to add human handoff experiences to your bot.  Super simple to use, just add a Send Handoff Activity to your dialog and the ACSConnector takes care of the rest. Escalations will be sent to a ready-made agent hub that you clone from GitHub which allows multiple agents to handle multiple simultaneous conversations with bot users.  Because it’s built purely from Azure Services, you can have an agent escalation capability up and working in 15 minutes or so.</Description>
+	<Summary>
+    This package integrates with a ready-made agent hub solution built on the Azure Communication Service
+    that allows you to add human handoff experiences to your bot.  Super simple to use, just add a Send
+    Handoff Activity in your dialog and the ACSConnector takes care of the rest. Escalations will be sent
+    to a ready-made agent hub that you clone from GitHub which allows multiple agents to handle multiple
+    simultaneous conversations with bot users.  Because its built purely from Azure Services you can have
+    a agent escalation capability up and working in 15 minutes or so.
+  </Summary>
+	<ContentTargetFolders>content</ContentTargetFolders>
+	<!--<PackageTags>msbot-component;msbot-content;msbot-middleware;msbot-action;msbot-trigger;msbot-adapter</PackageTags>-->
+	<PackageTags>msbot-component;msbot-middleware</PackageTags>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<Authors>Russ Williams</Authors>
+	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<PackageProjectUrl>http://aka.ms/corptex</PackageProjectUrl>
+	<RepositoryUrl>http://aka.ms/corptex</RepositoryUrl>
+	<PackageIcon>Agent.png</PackageIcon>
+	<PackageIconUrl />
+	<RepositoryType>GitHub</RepositoryType>
+	<AssemblyVersion>1.0.0.0</AssemblyVersion>
+	<FileVersion>1.0.0.0</FileVersion>
+	<Product>ACSConnector</Product>
+	<Version>1.0.0</Version>
+  </PropertyGroup>
+  
+   <ItemGroup>
+    <Content Include="**/*.schema" />
+    <Content Include="**/*.uischema" />
+    <None Include="exported/**/*.*" Pack="true" PackagePath="exported" />
+    <None Include="Icon\Agent.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="README.md" Condition="Exists('README.md')" Pack="true" PackagePath="" />
+  </ItemGroup>
+  
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.EventGrid" Version="3.2.0" />
+    <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.13.1" />
+    <PackageReference Include="Microsoft.NETCore.App" Version="2.2.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ACSAgentHubSDK\ACSAgentHubSDK.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,42 @@
+@import './ColorScheme.css';
+@import '../index.css';
+
+.tableStyle {
+    border-top: 1px solid darkgray;
+    background: var(--secondary)
+}
+
+.userName {
+    color: white;
+    font-size: medium;
+    font-weight: bold;
+}
+
+.context {
+    color: darkgray;
+    font-size: small;
+}
+
+.conversationPanel {
+    background: var(--secondary);
+}
+
+.conversationCmdBar {
+    height: 25px;
+    background: var(--primary-dark);
+    float: right;
+    margin-right: 10px;
+}
+
+.conversationList {
+    background: var(--primary-dark)
+}
+
+.conversationRow {
+    max-height: 50px !important;
+    min-height: 50px !important;
+    height: 50px !important;
+
+    border-bottom: 1px solid darkgray;
+}
+

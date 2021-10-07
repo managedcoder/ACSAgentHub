@@ -1,0 +1,20 @@
+@import './ColorScheme.css';
+
+.headerCommandBar {
+    background: var(--primary-light);
+    background-color: var(--primary-light);
+    height: 15px;
+    color: var(--on-primary);
+    text-align: right;
+    font-size: 9px;
+}
+
+.headerImageRow {
+    background: var(--primary);
+}
+
+.headerImage {
+    height: 75px;
+}
+
+

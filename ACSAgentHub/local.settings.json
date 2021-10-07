@@ -1,0 +1,16 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "agentHubStorageConnectionString": "DefaultEndpointsProtocol=https;EndpointSuffix=core.windows.net;AccountName=vatbotrhw;AccountKey=EePKrsPX352p3Xw9YGEiDakf2v5wD4Xu/a5V/9v11h3nkJjQISJFsVadeUds4Swpy01zpY+eq9l33P9UWfJzVQ==",
+    "acsConnectionString": "endpoint=https://vatbotrhwacs.communication.azure.com/;accesskey=gy1ZevQixUEP96qmC4K4JuqBWYObuZrw7FC2YnER81yU2k5sdTRak6qGkNd8z1uOWl2kMKKuoZt0AmPbvmArwA==",
+    "botBaseAddress": "http://localhost:3978/",
+    "useACSManagedIdentity": "false",
+    "webPusSubConnectionString": "Endpoint=https://vatbotrhwwps.webpubsub.azure.com;AccessKey=GVuMftA6ii/b1cdconG+47yWx8KX8gNNeAFJV7Xt2X8=;Version=1.0;",
+    "webPubSubHubName": "refreshConversations"
+  },
+  "Host": {
+    "CORS": "*"
+  }
+}

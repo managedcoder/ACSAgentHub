@@ -1,0 +1,47 @@
+{
+  "defaultLocale": "en-us",
+  "cognitiveModels": {
+    "en-us": {
+      "dispatchModel": {
+        "authoringkey": "c74917e7f7c84ca7a58cddeaae4a9f66",
+        "type": "dispatch",
+        "authoringRegion": "westus",
+        "name": "VATbotRHWen-us_Dispatch",
+        "region": "westus2",
+        "version": "Dispatch",
+        "appid": "cea3170c-a90b-4e32-8260-4f966d02cfb6",
+        "subscriptionkey": "dc1f8ad52ee6498b95e010917cf18702"
+      },
+      "languageModels": [
+        {
+          "region": "westus2",
+          "authoringkey": "c74917e7f7c84ca7a58cddeaae4a9f66",
+          "name": "VATbotRHWen-us_General",
+          "id": "General",
+          "version": "0.1",
+          "appid": "3de30aa8-a1e5-4a27-aafe-a3f10f9a54a9",
+          "subscriptionkey": "dc1f8ad52ee6498b95e010917cf18702",
+          "endpoint": "https://vatbotrhw-luisauthoring-s2tii2r.cognitiveservices.azure.com/"
+        }
+      ],
+      "knowledgebases": [
+        {
+          "kbId": "3d6cad9a-abdf-4069-a61f-914a1f24cec1",
+          "name": "Chitchat",
+          "subscriptionKey": "deb476be9faf4a0a86a98646f59a6ea0",
+          "endpointKey": "38367ccf-0239-46ff-8df3-f8374d934963",
+          "hostname": "https://vatbotrhw-qnahost-s2tii2r.azurewebsites.net",
+          "id": "Chitchat"
+        },
+        {
+          "kbId": "c6494a71-8c20-413a-919b-60a2486924d5",
+          "name": "Faq",
+          "subscriptionKey": "deb476be9faf4a0a86a98646f59a6ea0",
+          "endpointKey": "38367ccf-0239-46ff-8df3-f8374d934963",
+          "hostname": "https://vatbotrhw-qnahost-s2tii2r.azurewebsites.net",
+          "id": "Faq"
+        }
+      ]
+    }
+  }
+}

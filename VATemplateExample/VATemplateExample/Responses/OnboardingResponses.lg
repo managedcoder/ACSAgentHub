@@ -1,0 +1,12 @@
+﻿# NamePrompt
+- What is your name?
+- What's your name?
+
+# HaveNameMessage
+- Hi ${Name}!
+- Hi there, ${Name}!
+- Pleased to meet you, ${Name}!
+
+# WhyTheyNeedHelpPrompt
+- In a few words, tell me what you need help with?
+- In a few words, what can I tell the agent you need help with?

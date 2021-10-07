@@ -1,0 +1,27 @@
+@import './ColorScheme.css';
+@import '../index.css';
+
+.bladeMenu {
+    background-color: var(--primary-light) !important;
+    height: var(--contentAreaHeight);
+    font-size: 9.5px;
+    color: var(--on-secondary) !important;
+    margin-bottom: -15px;
+}
+
+.bladeMenuList {
+}
+
+.menuIcon {
+    display: block !important;
+}
+
+.menuLabel {
+    margin-top: 5px !important;
+}
+
+    .menuLabel > img {
+        width: 75px !important;
+        margin-bottom: -7px;
+        margin-left: -5px;
+    }

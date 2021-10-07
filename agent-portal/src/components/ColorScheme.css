@@ -1,0 +1,77 @@
+:root {
+    --primary: #592A71;
+    --primary-light: #774A8E;
+    --primary-lighter: #9874AA;
+    --primary-dark: #3E1255;
+    --primary-darker: #260339;
+    --secondary: #3D3175;
+    --secondary-light: #5E5293;
+    --secondary-lighter: #867DB0;
+    --secondary-dark: #231858;
+    --secondary-darker: #11073B;
+    --background: #ffffff;
+    --surface: #000000;
+    --on-primary: #ffffff;
+    --on-secondary: #ffffff;
+    --on-background: #000000;
+    --on-surface: #000000;
+    --on-error: #000000;
+}
+
+.primary {
+    background: var(--primary);
+    background-color: var(--primary);
+    color: var(--on-primary);
+}
+.primary-light {
+    background: var(--primary-light);
+    background-color: var(--primary-light);
+    color: var(--on-primary);
+}
+.primary-lighter {
+    background: var(--primary-lighter);
+    background-color: var(--primary-lighter);
+    color: var(--on-primary);
+}
+.primary-dark {
+    background: var(--primary-dark);
+    background-color: var(--primary-dark);
+    color: var(--on-primary);
+}
+.primary-darker {
+    background: var(--primary-darker);
+    background-color: var(--primary-darker);
+    color: var(--on-primary);
+}
+
+.secondary {
+    background: var(--secondary);
+    background-color: var(--secondary);
+    color: var(--on-secondary);
+}
+
+.secondary-light {
+    background: var(--secondary-light);
+    background-color: var(--secondary-light);
+    color: var(--on-secondary);
+}
+
+.secondary-lighter {
+    background: var(--secondary-lighter);
+    background-color: var(--secondary-lighter);
+    color: var(--on-secondary);
+}
+
+.secondary-dark {
+    background: var(--secondary-dark);
+    background-color: var(--secondary-dark);
+    color: var(--on-secondary);
+}
+
+.secondary-darker {
+    background: var(--secondary-darker);
+    background-color: var(--secondary-darker);
+    color: var(--on-secondary);
+}
+
+

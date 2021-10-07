@@ -1,0 +1,6 @@
+@import './ColorScheme.css';
+
+.footer {
+    min-height: 10px;
+    background: var(--primary);
+}
