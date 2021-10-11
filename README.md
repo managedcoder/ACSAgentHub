@@ -65,7 +65,7 @@ folder you used in previous step so you'll need to ```cd ACSAgentHub``` where th
 ```
 func start
 ```
-4) **Create Agent**  
+4) **Create Agent Account**  
 In PowerShell, create an agent in Azure Storage by running the Curl command below. You'll
 need to add at least one agent to be able to sign in to the agent-portal.
 ```

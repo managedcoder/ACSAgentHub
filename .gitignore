@@ -10,6 +10,7 @@
 **/Deployment/Resources/Dispatch/
 **/Deployment/Resources/QnA/**/*.json
 **/Deployment/Resources/LU/**/*.json
+**/localFeed
 /ACSAgentHubPublish.zip
 /ContactCenterVATBot/ContactCenterVATBot/code.zip
 

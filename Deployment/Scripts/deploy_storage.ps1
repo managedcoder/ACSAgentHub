@@ -27,7 +27,7 @@ if ($showCommands.ToLower() -eq "true") {
   Write-Host "az storage account show-connection-string -g ""$resourceGroup"" -n ""$storageAccountName"" " 
 }
 $acsAgentHubStorage = az storage account show-connection-string -g "$resourceGroup" -n "$storageAccountName" | ConvertFrom-Json -Depth 10
-Write-Host " - Done." -ForegroundColor Green
+if ($showCommands.ToLower() -eq "true") { Write-Host " - Done." -ForegroundColor Green }
 
 # Create return object
 $result = [PSCustomObject]@{

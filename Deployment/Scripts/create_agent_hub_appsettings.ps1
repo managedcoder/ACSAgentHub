@@ -6,10 +6,15 @@ Param(
     [string] $acsConnectionString,
     [string] $wpsConnectionString,
     [string] $storageConnectionString,
-    [string] $resourceGroup
+    [string] $resourceGroup,
+    [string] $showCommands = "false"
  )
 
 $acsAgentHubAppSettingFile = Join-Path $PSScriptRoot ..\..\ "ACSAgentHub\local.settings.json"
+$resolvedPath = Resolve-Path $acsAgentHubAppSettingFile
+
+Write-Host "Updating " $resolvedPath -NoNewline -ForegroundColor Green
+if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host '$agentHubAppsettings = Invoke-Expression "& ''$(Join-Path '$PSScriptRoot' ''create_agent_hub_appsettings.ps1'')'' -resourceGroup '$resourceGroup' -acsConnectionString ""'$acsConnectionString'"" -wpsConnectionString ""'$wpsConnectionString'"" -storageConnectionString ""'$storageConnectionString'"" "'}
 $acsAgentHubLocalSettings = Get-Content $acsAgentHubAppSettingFile -Encoding UTF8 | ConvertFrom-Json -Depth 10
 
 $acsAgentHubLocalSettings.Values.agentHubStorageConnectionString = $storageConnectionString
@@ -22,7 +27,6 @@ $acsAgentHubLocalSettings.Values.webPubSubHubName = "refreshConversations"
 # Write updated appsettings to appsettings file
 ConvertTo-Json $acsAgentHubLocalSettings -Depth 10 | Set-Content $acsAgentHubAppSettingFile -Encoding UTF8
 
-$resolvedPath = Resolve-Path $acsAgentHubAppSettingFile
-Write-Host "Updated " $resolvedPath -ForegroundColor Green
+Write-Host " - Done." -ForegroundColor Green
 
 return $acsAgentHubLocalSettings | ConvertTo-Json

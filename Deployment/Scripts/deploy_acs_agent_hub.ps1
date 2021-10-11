@@ -8,6 +8,7 @@ Param(
     [string] $hubName,
     [string] $resourceGroup,
     [string] $location,
+    [string] $NuGetFullPath,
     [string] $showCommands = "false",
     [string] $projDir = $(Get-Location),
     [string] $logFile = $(Join-Path $PSScriptRoot .. "deploy_log.txt")
@@ -68,7 +69,6 @@ if (-not $location) {
 }
 
 # Get timestamp
-$timestamp = Get-Date -Format MMddyyyyHHmmss
 $startTime = Get-Date
 
 # Create resource group
@@ -81,25 +81,50 @@ az group create `
   2>> "$logFile" | Out-Null
 Write-Host " - Done." -ForegroundColor Green
 
-$appServicePlan = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_app_service.ps1')' -name ""$hubName"" -resourceGroup ""$resourceGroup"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
+$appServicePlan = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_app_service.ps1')' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
 
-$appInsights = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_app_insights.ps1')' -name ""$hubName"" -resourceGroup ""$resourceGroup"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
+$appInsights = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_app_insights.ps1')' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
 
-$agentHubStorage = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_storage.ps1')' -name ""$hubName"" -resourceGroup ""$resourceGroup"" -location ""$location"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
+$agentHubStorage = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_storage.ps1')' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -location ""$location"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
 
-$functionApp = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_function_app.ps1')' -name ""$hubName"" -resourceGroup ""$resourceGroup"" -storageAccountName ""$($agentHubStorage.storageAccountName)"" -functionAppServicePlanName ""$($appServicePlan.appServicePlanName)"" -appInsightsName ""$($appInsights.appInsightsName)"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
+$functionApp = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_function_app.ps1')' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -storageAccountName ""$($agentHubStorage.storageAccountName)"" -functionAppServicePlanName ""$($appServicePlan.appServicePlanName)"" -appInsightsName ""$($appInsights.appInsightsName)"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
 
-$acs = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_acs.ps1')' -name ""$hubName"" -resourceGroup ""$resourceGroup"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
+$acs = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_acs.ps1')' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
 
-$wps = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_webPubSub.ps1')' -name ""$hubName"" -resourceGroup ""$resourceGroup"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
+$wps = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_webPubSub.ps1')' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
 
-$eventGrid = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_eventgrid.ps1')' -name ""$hubName"" -resourceGroup ""$resourceGroup"" -communicationServerName ""$($acs.acsName)"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
+$eventGrid = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_eventgrid.ps1')' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -communicationServerName ""$($acs.acsName)"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
 
-$agentPortalAppsettings = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'create_agent-portal_appsettings.ps1')' -webPubSubName ""$($wps.wpsName)"" -resourceGroup ""$resourceGroup"" -Encoding UTF8"
+$agentPortalAppsettings = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'create_agent-portal_appsettings.ps1')' -webPubSubName ""$($wps.wpsName)"" -resourceGroup $resourceGroup -showCommands ""$showCommands"" -Encoding UTF8"
 
-$agentHubAppsettings = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'create_agent_hub_appsettings.ps1')' -resourceGroup ""$resourceGroup"" -acsConnectionString ""$($acs.acsConnectionString)"" -wpsConnectionString ""$($wps.wpsConnectionString)"" -storageConnectionString ""$($agentHubStorage.storageConnectionString)"" "
+$agentHubAppsettings = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'create_agent_hub_appsettings.ps1')' -resourceGroup $resourceGroup -acsConnectionString ""$($acs.acsConnectionString)"" -wpsConnectionString ""$($wps.wpsConnectionString)"" -storageConnectionString ""$($agentHubStorage.storageConnectionString)"" -showCommands ""$showCommands"" "
+
+# Build ACSConnector NuGet package
+Write-Host "Building ACSConnector" -NoNewline -ForegroundColor Green
+$acsConnectorProjectFile = Join-Path $PSScriptRoot ..\..\ "ACSConnector\ACSConnector.csproj"
+if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "dotnet build $acsConnectorProjectFile -c Debug"}
+dotnet build $acsConnectorProjectFile -c Debug 2>> "$logFile" | Out-Null
+
+Write-Host " - Done." -ForegroundColor Green
+
+# Create local NuGet feed for ACSConnector
+Write-Host "Creating local NuGet feed for ACSConnector" -NoNewline -ForegroundColor Green
+$acsConnectorNuGetPackage = Join-Path $PSScriptRoot ..\..\ "ACSConnector\bin\Debug\ACSConnector.1.0.0.nupkg"
+$acsAgentHubSDKNuGetPackage = Join-Path $PSScriptRoot ..\.. "ACSAgentHubSDK\bin\Debug\ACSAgentHubSDK.1.0.0.nupkg"
+$acsConnectorLocalFeedFolder = join-Path $PSScriptRoot ..\..\ "ACSConnector\localFeed"
+# First, create folder for local NuGet feed
+if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "mkdir -Force $acsConnectorLocalFeedFolder"}
+mkdir -Force $acsConnectorLocalFeedFolder
+
+# Next, add ACSConnector and its dependencies to local feed
+if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath add $acsConnectorNuGetPackage -Source $acsConnectorLocalFeedFolder" }
+& $NuGetFullPath add $acsConnectorNuGetPackage -Source $acsConnectorLocalFeedFolder
+if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath add $acsAgentHubSDKNuGetPackage -Source $acsConnectorLocalFeedFolder" }
+& $NuGetFullPath add $acsAgentHubSDKNuGetPackage -Source $acsConnectorLocalFeedFolder
+
+Write-Host " - Done." -ForegroundColor Green
 
 $endTime = Get-Date
 $duration = New-TimeSpan $startTime $endTime
-Write-Host "Script took to $($duration.minutes) minutes finish"
+Write-Host "deploy_acs_agent_hub.ps1 took to  $($duration.minutes) minutes finish"
 

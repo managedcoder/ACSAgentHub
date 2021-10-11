@@ -3,12 +3,17 @@ This scripts creates the appsettings object used to provide app settings to the 
 #>
 
 Param(
-    [string] $hubName,
-    [string] $resourceGroup
+    [string] $webPubSubName,
+    [string] $resourceGroup,
+    [string] $showCommands = "false"
  )
 
-$webPubSubName = $hubName + "WPS"
 $settingFile =  $(Join-Path -Path $PSScriptRoot -ChildPath "..\..\agent-portal\src\settings\appsettings.ts")
+$resolvedPath = Resolve-Path $settingFile
+
+# Add -NoNewline back in when "preview warning goes away"
+Write-Host "Updating " $resolvedPath -ForegroundColor Green
+if ($showCommands.ToLower() -eq "true") {Write-Host '$agentPortalAppsettings = Invoke-Expression "& ''$(Join-Path '$PSScriptRoot' ''create_agent-portal_appsettings.ps1'')'' -webPubSubName ""'$webPubSubName'"" -resourceGroup '$resourceGroup' -Encoding UTF8"'}
 
 $appsettings = @{    
   agentHubBaseAddress = 'http://localhost:7071' # Default to local settings so we can run local out of the box
@@ -32,8 +37,7 @@ Add-Content -Path $settingFile -Value "    webPusSubConnectionString: '$($appset
 Add-Content -Path $settingFile -Value "    webPubSubHubName: '$($appsettings.webPubSubHubName)'"
 Add-Content -Path $settingFile -Value "};"
 
-$resolvedPath = Resolve-Path $settingFile
-Write-Host "Updated " $resolvedPath -ForegroundColor Green
+Write-Host " - Done." -ForegroundColor Green
 
 return $appsettings | ConvertTo-Json
 
