@@ -8,7 +8,9 @@ Param(
     [string] $hubName,
     [string] $resourceGroup,
     [string] $location,
+    [string] $restart = "false",
     [string] $NuGetFullPath,
+    [string] $connectorPackageVersion = "1.0.0",
     [string] $showCommands = "false",
     [string] $projDir = $(Get-Location),
     [string] $logFile = $(Join-Path $PSScriptRoot .. "deploy_log.txt")
@@ -54,7 +56,7 @@ $errCnt = 0
 
 # Step 2 - Deploy ACS Agent Hub
 # No need for Write-Host progress update since deploy_acs_agent_hub.ps1 reports its own status
-.\Deployment\Scripts\deploy_acs_agent_hub.ps1 -hubName $hubName -location $location -resourceGroup $resourceGroup -NuGetFullPAth $NuGetFullPath -showCommands $showCommands
+.\Deployment\Scripts\deploy_acs_agent_hub.ps1 -hubName $hubName -location $location -resourceGroup $resourceGroup -NuGetFullPAth $NuGetFullPath -connectorPackageVersion $connectorPackageVersion -showCommands $showCommands
 
 # Step 3 - Start Agent Hub Service
 Write-Host "Starting Agent Hub service" -NoNewline -ForegroundColor Green
@@ -106,7 +108,7 @@ Start-Sleep -s 15 2>> "$logFile" | Out-Null
 # Step 6 - Subscribe to ACS Message Event
 # No need for Write-Host progress update since update_webhook.ps1 reports its own status
 # Frist, query ngrok and turn JSON result into object that we can use to get https endpoint
-$ngrokResult = curl http://127.0.0.1:4040/api/tunnels
+$ngrokResult = curl http://127.0.0.1:4040/api/tunnels 2>> "$logFile"
 $ngrok = ConvertFrom-Json $ngrokResult 
 
 # Next, loop through results find https endpoint (I don't want to assume it's always at the same index in results)
@@ -114,14 +116,15 @@ for($i = 0; $i -lt $ngrok.tunnels.length; $i++)
 {
     if ($ngrok.tunnels[$i].proto -eq 'https') 
     {
-        $httpsEndpoint = $ngrok.tunnels[$i].proto
+        $httpsEndpoint = $ngrok.tunnels[$i].public_url
     } 
 }
 
 # Finally, if we were able to grab the https endpoint then use it to configure Event Grid to subscribe to message events 
 if ($httpsEndpoint)
 {
-    .\Deployment\Scripts\update_webhook.ps1 -hubName $hubName -endpoint "$httpsEndpoint/api/agenthub/messagewebhook" -resourceGroup $resourceGroup -showCommands $showCommands
+  if ($showCommands.ToLower() -eq "true") { Write-Host ''; Write-Host ".\Deployment\Scripts\update_webhook.ps1 -hubName $hubName -endpoint $httpsEndpoint/api/agenthub/messagewebhook -resourceGroup $resourceGroup -showCommands $showCommands" }
+  .\Deployment\Scripts\update_webhook.ps1 -hubName $hubName -endpoint $httpsEndpoint"/api/agenthub/messagewebhook" -resourceGroup $resourceGroup -showCommands $showCommands
 }
 else
 {

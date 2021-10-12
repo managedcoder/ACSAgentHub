@@ -9,6 +9,7 @@ Param(
     [string] $resourceGroup,
     [string] $location,
     [string] $NuGetFullPath,
+    [string] $connectorPackageVersion = "1.0.0",
     [string] $showCommands = "false",
     [string] $projDir = $(Get-Location),
     [string] $logFile = $(Join-Path $PSScriptRoot .. "deploy_log.txt")
@@ -101,7 +102,7 @@ $agentHubAppsettings = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'create_a
 
 # Build ACSConnector NuGet package
 Write-Host "Building ACSConnector" -NoNewline -ForegroundColor Green
-$acsConnectorProjectFile = Join-Path $PSScriptRoot ..\..\ "ACSConnector\ACSConnector.csproj"
+$acsConnectorProjectFile = Join-Path $PSScriptRoot ..\..\ "ACSConnector\ACSConnector.csproj" -Resolve
 if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "dotnet build $acsConnectorProjectFile -c Debug"}
 dotnet build $acsConnectorProjectFile -c Debug 2>> "$logFile" | Out-Null
 
@@ -109,22 +110,25 @@ Write-Host " - Done." -ForegroundColor Green
 
 # Create local NuGet feed for ACSConnector
 Write-Host "Creating local NuGet feed for ACSConnector" -NoNewline -ForegroundColor Green
-$acsConnectorNuGetPackage = Join-Path $PSScriptRoot ..\..\ "ACSConnector\bin\Debug\ACSConnector.1.0.0.nupkg"
-$acsAgentHubSDKNuGetPackage = Join-Path $PSScriptRoot ..\.. "ACSAgentHubSDK\bin\Debug\ACSAgentHubSDK.1.0.0.nupkg"
-$acsConnectorLocalFeedFolder = join-Path $PSScriptRoot ..\..\ "ACSConnector\localFeed"
+$acsConnectorNuGetPackage = Join-Path $PSScriptRoot ..\..\ "ACSConnector\bin\Debug\ACSConnector.$connectorPackageVersion.nupkg" -Resolve
+$acsAgentHubSDKNuGetPackage = Join-Path $PSScriptRoot ..\.. "ACSAgentHubSDK\bin\Debug\ACSAgentHubSDK.$connectorPackageVersion.nupkg" -Resolve
+$acsConnectorLocalFeedFolder = join-Path $PSScriptRoot ..\..\ "ACSConnector\localFeed" -Resolve
 # First, create folder for local NuGet feed
 if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "mkdir -Force $acsConnectorLocalFeedFolder"}
-mkdir -Force $acsConnectorLocalFeedFolder
+mkdir -Force $acsConnectorLocalFeedFolder 2>> "$logFile" | Out-Null
+
+& $NuGetFullPath delete ACSAgentHubSDK $connectorPackageVersion -Source $acsConnectorLocalFeedFolder -NonInteractive 2>> "$logFile" | Out-Null
+& $NuGetFullPath delete ACSConnector $connectorPackageVersion -Source $acsConnectorLocalFeedFolder -NonInteractive 2>> "$logFile" | Out-Null
 
 # Next, add ACSConnector and its dependencies to local feed
 if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath add $acsConnectorNuGetPackage -Source $acsConnectorLocalFeedFolder" }
-& $NuGetFullPath add $acsConnectorNuGetPackage -Source $acsConnectorLocalFeedFolder
+& $NuGetFullPath add $acsConnectorNuGetPackage -Source $acsConnectorLocalFeedFolder 2>> "$logFile" | Out-Null
 if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath add $acsAgentHubSDKNuGetPackage -Source $acsConnectorLocalFeedFolder" }
-& $NuGetFullPath add $acsAgentHubSDKNuGetPackage -Source $acsConnectorLocalFeedFolder
+& $NuGetFullPath add $acsAgentHubSDKNuGetPackage -Source $acsConnectorLocalFeedFolder 2>> "$logFile" | Out-Null
 
 Write-Host " - Done." -ForegroundColor Green
 
 $endTime = Get-Date
 $duration = New-TimeSpan $startTime $endTime
-Write-Host "deploy_acs_agent_hub.ps1 took to  $($duration.minutes) minutes finish"
+#Write-Host "deploy_acs_agent_hub.ps1 took to  $($duration.minutes) minutes finish"
 
