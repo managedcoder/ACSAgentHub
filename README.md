@@ -69,16 +69,24 @@ required services
 - **\<nuget path>** is the full path to the nuget.exe (e.g., c:\nuget\nuget.exe)
 
 ### <a name="ExploreEscalationScenarios"></a>Explore Escalation Scenarios
-Open the Bot Framework Composer and select the **Open** link on the Home tab and open the ComposerExample that's in
-the root folder of the solution. This is a very simple bot with an Escalate trigger that you can look at to see how
-to code an escalation and then try it out by using the **Start bot** command.  After the bot starts, choose the
-**Open Web Chat** option in the flyout menu that appears when the bot finishes it's startup processing.  Type, _**talk
-to human**_ to start an escalation experience.  There's a short [demo video](http://add-demo-here) you can watch that
-shows all these steps and various escalation and agent management scenaios you can replicate using this sample app.
+To make it easy for you to quickly experiment with the ACS Agent Hub we've included sample applications that are all
+ready to go.  All you need to do to try it out is to open the Bot Framework Composer and select the **Open** link on
+the Home tab and open the ComposerExample that's in the root folder of the solution. This is a very simple bot with 
+an Escalate trigger that you can look at to see how to code an escalation and then try it out by using the 
+**Start bot** command.  After the bot starts, choose the **Open Web Chat** option in the flyout menu that appears
+when the bot finishes it's startup processing.  Type, _**talk to human**_ to start an escalation experience.  There's
+a short [demo video](http://add-demo-here) you can watch that shows all these steps and various escalation and agent
+management scenaios you can replicate using this sample app.
 
 ### <a name="AddingEscalationToYourBot"></a>Adding Escalation to Your Bot
-Adding agent escalation to a Composer bot is very simple and only involves a few steps:
-1) **Install Package** - Use the package manager to install the ACSConnector package
+The samples are nice for quickly experimenting with escalation and taking a look at how it's coded, but they don't 
+address how to add escalation to bots.  The good news is that adding agent escalation to a Composer bot is very 
+simple and only involves a few steps.  These following steps are shown in a very short video [here](http://adding-escalation-=video)
+that you might find easier to follow.
+1) **Install Agent Hub Package** - First create a local feed so Composer will know where the package lives and second,
+add the ACSConnector package to your bot as show in the following screen shots, respectively<br>
+![High-level Subsystem Overview](doc/CreatingLocalFeed.png)<br>
+![High-level Subsystem Overview](doc/InstallingACSConnector.png)
 2) **Add Escalation Action** - Add a _**Send handoff activity**_ action to any dialog and wherever it makes sense in your bo<br> 
 ![High-level Subsystem Overview](doc/EscalateAction.png)
 3) **Set Escalation Action Properties** - Paste the following escalation payload into **Context** property of escalation action and set **Transcription**
@@ -97,12 +105,13 @@ the this agent hub solution you'll use the above payload.  Currently, the **Skil
 being used and can be set to whatever you like or left empty.  The **Name** and **WhyTheyNeedHelp** properties
 are used in the agent-portal and the ComposerExample shows a nice way to gather and set those properties.<br>
 ![High-level Subsystem Overview](doc/EscalationProperties.png)
-3) **Set App Setting** - Paste the following into the bot's appsettings.json:<br>
+4) **Set App Setting** - Paste the following at the top of the bot's appsettings.json file:<br>
 ```
   "ACSConnector": {
     "acsAgentHubBaseAddress": "http://localhost:7071"
   },
 ```
+![High-level Subsystem Overview](doc/AppSettings.png)
 
 ### <a name="AddingAgentEscalationToNewOrExistingBot"></a>Appendix A: Agent Escalation in a VA Template Bot
 If you want to add agent escalation to a Virtual Assistant Template bot, you can explore
