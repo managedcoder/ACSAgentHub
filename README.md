@@ -83,11 +83,12 @@ The samples are nice for quickly experimenting with escalation and taking a look
 address how to add escalation to bots.  The good news is that adding agent escalation to a Composer bot is very 
 simple and only involves a few steps.  These following steps are shown in a very short video [here](http://adding-escalation-=video)
 that you might find easier to follow.
-1) **Install Agent Hub Package** - First create a local feed so Composer will know where the package lives and second,
-add the ACSConnector package to your bot as show in the following screen shots, respectively<br>
+1) **Install Agent Hub Package** - First, create a local feed and set its URL property to the full path of the
+.\ACSConnector\localFeed folder so Composer will know where find the package and second, add the ACSConnector package
+to your bot as shown in the following screen shots, respectively<br>
 ![High-level Subsystem Overview](doc/CreatingLocalFeed.png)<br>
 ![High-level Subsystem Overview](doc/InstallingACSConnector.png)
-2) **Add Escalation Action** - Add a _**Send handoff activity**_ action to any dialog and wherever it makes sense in your bo<br> 
+2) **Add an Escalation Action** - Add a _**Send handoff activity**_ action to any dialog and wherever it makes sense in your bo<br> 
 ![High-level Subsystem Overview](doc/EscalateAction.png)
 3) **Set Escalation Action Properties** - Paste the following escalation payload into **Context** property of escalation action and set **Transcription**
 to ```=null``` as shown below: <br>
