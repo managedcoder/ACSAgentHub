@@ -102,11 +102,12 @@ to ```=null```:<br>
 }
 ```
 The properties and values above are defined by the agent hub you're escalating to.  So, for example, the payload
-unique for LivePerson or Omnichannel and you'd check their documentation to find out what that is but for
-the this agent hub solution you'll use the above payload.  Currently, the **Skill** and **CustomerType** are not
-being used and can be set to whatever you like or left empty.  The **Name** and **WhyTheyNeedHelp** properties
-are used in the agent-portal and the ComposerExample shows a nice way to gather and set those properties.<br>
-Its should look like this after you've set those properties:>br>
+is unique to LivePerson or Omnichannel and you'd check their documentation to find out what the payload should
+look like for those agent hub solutions but, for the ACS Agent Hub you'll use the above payload.  Currently, 
+the **Skill** and **CustomerType** properties are not being used by the ACS Agent Hub and can be set to whatever
+you like or left empty.  The **Name** and **WhyTheyNeedHelp** properties are used in the agent-portal and the 
+ComposerExample shows a nice way to gather and set those properties.  When you're finished, it should look like
+this:<br>
 ![High-level Subsystem Overview](doc/EscalationProperties.png)
 4) **Set App Setting** - Paste the following at the top of the bot's appsettings.json file:<br>
 ```
