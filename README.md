@@ -51,10 +51,14 @@ In PowerShell, change the current directory to the root solution folder (i.e., t
 that contains the ACSAgentHub.sln file). Then run the following script to deploy and
 configure all the services required by the ACS Agent Hub:
 ```
-.\Deployment\Scripts\deploy_acs_agent_hub.ps1 -hubName <hub name> -location <region>
+.\Deployment\Scripts\deploy_and_configure.ps1 -hubName <hub name> -resourceGroup <resource group> -location <location name> -NuGetFullPath <nuget path>
 ```
-where <hub name> is the name of your agent hub which will used in creating the various
-required services.
+where:
+- <hub name> is the name of your agent hub which will used in creating the various
+required services
+- <resource group> is the name of the resource group that services will be deployed to
+- <location name> is the Azure location name of the region that services will be deployed in
+- <nuget path> is the full path to the nuget.exe (e.g., c:\nuget\nuget.exe)
 
 3) **Start Agent Hub Service**  
 The core agent hub logic lives in a set APIs in the ACSAgentHub Azure Function project and
