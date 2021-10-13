@@ -88,7 +88,8 @@ that you might find easier to follow.
 to your bot as shown in the following screen shots, respectively<br>
 ![High-level Subsystem Overview](doc/CreatingLocalFeed.png)<br>
 ![High-level Subsystem Overview](doc/InstallingACSConnector.png)
-2) **Add an Escalation Action** - Add a _**Send handoff activity**_ action to any dialog and wherever it makes sense in your bo<br> 
+2) **Add an Escalation Action** - Add a _**Send handoff activity**_ action to any dialog and at wherever point makes
+sense for your bot<br> 
 ![High-level Subsystem Overview](doc/EscalateAction.png)
 3) **Set Escalation Action Properties** - Paste the following escalation payload into **Context** property of escalation action and set **Transcription**
 to ```=null``` as shown below: <br>
