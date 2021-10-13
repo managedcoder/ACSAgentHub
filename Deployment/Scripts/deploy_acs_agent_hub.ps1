@@ -12,7 +12,7 @@ Param(
     [string] $connectorPackageVersion = "1.0.0",
     [string] $showCommands = "false",
     [string] $projDir = $(Get-Location),
-    [string] $logFile = $(Join-Path $PSScriptRoot .. "deploy_log.txt")
+    [string] $logFile = $(Join-Path $PSScriptRoot .. "deploy_log.txt" -Resolve)
 )
 
 # Reset log file
@@ -49,7 +49,7 @@ else {
     $azclierrormessage | Out-File -Append -FilePath $logfile
 }
 
-if (-not (Test-Path (Join-Path $projDir 'ACSAgentHub.sln')))
+if (-not (Test-Path (Join-Path $projDir 'ACSAgentHub.sln' -Resolve)))
 {
     Write-Host "! Could not find the 'ACSAgentHub.sln' file in the current directory." -ForegroundColor Red
     Write-Host "+ Please re-run this script from root of the solution directory." -ForegroundColor Magenta
@@ -82,23 +82,23 @@ az group create `
   2>> "$logFile" | Out-Null
 Write-Host " - Done." -ForegroundColor Green
 
-$appServicePlan = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_app_service.ps1')' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
+$appServicePlan = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_app_service.ps1' -Resolve)' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
 
-$appInsights = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_app_insights.ps1')' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
+$appInsights = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_app_insights.ps1' -Resolve)' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
 
-$agentHubStorage = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_storage.ps1')' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -location ""$location"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
+$agentHubStorage = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_storage.ps1' -Resolve)' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -location ""$location"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
 
-$functionApp = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_function_app.ps1')' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -storageAccountName ""$($agentHubStorage.storageAccountName)"" -functionAppServicePlanName ""$($appServicePlan.appServicePlanName)"" -appInsightsName ""$($appInsights.appInsightsName)"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
+$functionApp = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_function_app.ps1' -Resolve)' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -storageAccountName ""$($agentHubStorage.storageAccountName)"" -functionAppServicePlanName ""$($appServicePlan.appServicePlanName)"" -appInsightsName ""$($appInsights.appInsightsName)"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
 
-$acs = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_acs.ps1')' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
+$acs = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_acs.ps1' -Resolve)' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
 
-$wps = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_webPubSub.ps1')' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
+$wps = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_webPubSub.ps1' -Resolve)' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
 
-$eventGrid = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_eventgrid.ps1')' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -communicationServerName ""$($acs.acsName)"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
+$eventGrid = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'deploy_eventgrid.ps1' -Resolve)' -hubName ""$hubName"" -resourceGroup ""$resourceGroup"" -communicationServerName ""$($acs.acsName)"" -showCommands ""$showCommands"" -Encoding UTF8" | ConvertFrom-Json
 
-$agentPortalAppsettings = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'create_agent-portal_appsettings.ps1')' -webPubSubName ""$($wps.wpsName)"" -resourceGroup $resourceGroup -showCommands ""$showCommands"" -Encoding UTF8"
+$agentPortalAppsettings = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'create_agent-portal_appsettings.ps1' -Resolve)' -webPubSubName ""$($wps.wpsName)"" -resourceGroup $resourceGroup -showCommands ""$showCommands"" -Encoding UTF8"
 
-$agentHubAppsettings = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'create_agent_hub_appsettings.ps1')' -resourceGroup $resourceGroup -acsConnectionString ""$($acs.acsConnectionString)"" -wpsConnectionString ""$($wps.wpsConnectionString)"" -storageConnectionString ""$($agentHubStorage.storageConnectionString)"" -showCommands ""$showCommands"" "
+$agentHubAppsettings = Invoke-Expression "& '$(Join-Path $PSScriptRoot 'create_agent_hub_appsettings.ps1' -Resolve)' -resourceGroup $resourceGroup -acsConnectionString ""$($acs.acsConnectionString)"" -wpsConnectionString ""$($wps.wpsConnectionString)"" -storageConnectionString ""$($agentHubStorage.storageConnectionString)"" -showCommands ""$showCommands"" "
 
 # Build ACSConnector NuGet package
 Write-Host "Building ACSConnector" -NoNewline -ForegroundColor Green
@@ -120,7 +120,10 @@ mkdir -Force $acsConnectorLocalFeedFolder 2>> "$logFile" | Out-Null
 & $NuGetFullPath delete ACSAgentHubSDK $connectorPackageVersion -Source $acsConnectorLocalFeedFolder -NonInteractive 2>> "$logFile" | Out-Null
 & $NuGetFullPath delete ACSConnector $connectorPackageVersion -Source $acsConnectorLocalFeedFolder -NonInteractive 2>> "$logFile" | Out-Null
 
-# Next, add ACSConnector and its dependencies to local feed
+# Next, clear all NuGet caches in case we are overwriting existing versions of existing NuGet packages (this can cause runtime startup issues in Composer)
+& $NuGetFullPath locals all -clear 2>> "$logFile" | Out-Null
+
+# Next, add ACSConnector and its dependencies to local NuGet feed
 if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath add $acsConnectorNuGetPackage -Source $acsConnectorLocalFeedFolder" }
 & $NuGetFullPath add $acsConnectorNuGetPackage -Source $acsConnectorLocalFeedFolder 2>> "$logFile" | Out-Null
 if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath add $acsAgentHubSDKNuGetPackage -Source $acsConnectorLocalFeedFolder" }

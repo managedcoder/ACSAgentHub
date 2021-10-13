@@ -5,7 +5,7 @@ Param(
     [string] $resourceGroup,
     [string] $location,
     [string] $showCommands = "false",
-    [string] $logfile = $(Join-Path $PSScriptRoot .. "deploy_log.txt")
+    [string] $logfile = $(Join-Path $PSScriptRoot .. "deploy_log.txt" -Resolve)
  )
 
 # Create Storage account

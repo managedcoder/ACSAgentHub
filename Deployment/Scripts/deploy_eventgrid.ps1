@@ -5,7 +5,7 @@ Param(
     [string] $resourceGroup,
     [string] $communicationServerName,
     [string] $showCommands = "false",
-    [string] $logfile = $(Join-Path $PSScriptRoot .. "deploy_log.txt")
+    [string] $logfile = $(Join-Path $PSScriptRoot .. "deploy_log.txt" -Resolve)
  )
 
  $azureSubscriptionId = az account show --query id --output tsv

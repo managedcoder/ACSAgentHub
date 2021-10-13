@@ -7,7 +7,7 @@ Param(
     [string] $endpoint,
     [string] $resourceGroup,
     [string] $showCommands = "false",
-    [string] $logfile = $(Join-Path $PSScriptRoot .. "deploy_log.txt")
+    [string] $logfile = $(Join-Path $PSScriptRoot .. "deploy_log.txt" -Resolve)
  )
 
 # Reset log file
@@ -37,13 +37,12 @@ $result = az eventgrid event-subscription show `
 
 if ($result)
 {
-  write-host "Updating Agent Hub webhook for ACS message subscription named $($hubName)" -NoNewline -ForegroundColor Green
+  write-host "Updating Agent Hub webhook for ACS message subscription named $($eventSubscriptionName)" -NoNewline -ForegroundColor Green
   if ($showCommands.ToLower() -eq "true") { Write-Host ""; write-host "az eventgrid event-subscription update --name ""$eventSubscriptionName"" --endpoint ""$endpoint"" --endpoint-type ""webhook"" --event-delivery-schema ""eventgridschema"" --included-event-types ""Microsoft.Communication.ChatMessageReceivedInThread"" --source-resource-id ""/subscriptions/$($azureSubscriptionId)/resourceGroups/$($resourceGroup)/providers/Microsoft.Communication/CommunicationServices/$($acsServiceName)"" --subscription ""$($azureSubscriptionId)"" "}
   az eventgrid event-subscription update `
     --name "$eventSubscriptionName" `
     --endpoint "$endpoint" `
     --endpoint-type "webhook" `
-    --event-delivery-schema "eventgridschema" `
     --included-event-types "Microsoft.Communication.ChatMessageReceivedInThread" `
     --source-resource-id "/subscriptions/$($azureSubscriptionId)/resourceGroups/$($resourceGroup)/providers/Microsoft.Communication/CommunicationServices/$($acsServiceName)" `
     --subscription "$($azureSubscriptionId)" `
@@ -52,7 +51,7 @@ if ($result)
  }
 else
 {
-  write-host "Adding Agent Hub webhook for ACS message subscription named $($resourceGroup)" -NoNewline -ForegroundColor Green
+  write-host "Adding Agent Hub webhook for ACS message subscription named $($eventSubscriptionName)" -NoNewline -ForegroundColor Green
 
   if ($showCommands.ToLower() -eq "true") { Write-Host ""; write-host "az eventgrid event-subscription create --name ""$($eventSubscriptionName)"" --endpoint ""$endpoint"" --endpoint-type ""webhook"" --event-delivery-schema ""eventgridschema"" --included-event-types ""Microsoft.Communication.ChatMessageReceivedInThread"" --source-resource-id ""/subscriptions/$($azureSubscriptionId)/resourceGroups/$($resourceGroup)/providers/Microsoft.Communication/CommunicationServices/$($acsServiceName)"" --subscription ""$($azureSubscriptionId)"" " }
   az eventgrid event-subscription create `

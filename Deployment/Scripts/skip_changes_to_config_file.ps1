@@ -5,7 +5,7 @@ of the application with empty values or appropriate defaults.
 #>
 
 Param(
-    [switch] $undo
+    [switch] $undo # Turns tracking back on so you can edit config files and the check them back in and then turn tracking back off
 )
 
 $botAppSettings = $(Join-Path $PSScriptRoot ..\.. "VATemplateExample\VATemplateExample\appsettings.json" -Resolve)

@@ -8,12 +8,12 @@ Param(
     [string] $showCommands = "false"
  )
 
-$settingFile =  $(Join-Path -Path $PSScriptRoot -ChildPath "..\..\agent-portal\src\settings\appsettings.ts")
+$settingFile =  $(Join-Path -Path $PSScriptRoot -ChildPath "..\..\agent-portal\src\settings\appsettings.ts" -Resolve)
 $resolvedPath = Resolve-Path $settingFile
 
 # Add -NoNewline back in when "preview warning goes away"
 Write-Host "Updating " $resolvedPath -ForegroundColor Green
-if ($showCommands.ToLower() -eq "true") {Write-Host '$agentPortalAppsettings = Invoke-Expression "& ''$(Join-Path '$PSScriptRoot' ''create_agent-portal_appsettings.ps1'')'' -webPubSubName ""'$webPubSubName'"" -resourceGroup '$resourceGroup' -Encoding UTF8"'}
+if ($showCommands.ToLower() -eq "true") {Write-Host '$agentPortalAppsettings = Invoke-Expression "& ''$(Join-Path '$PSScriptRoot' ''create_agent-portal_appsettings.ps1'' -Resolve)'' -webPubSubName ""'$webPubSubName'"" -resourceGroup '$resourceGroup' -Encoding UTF8"'}
 
 $appsettings = @{    
   agentHubBaseAddress = 'http://localhost:7071' # Default to local settings so we can run local out of the box

@@ -10,11 +10,10 @@ Param(
     [string] $showCommands = "false"
  )
 
-$acsAgentHubAppSettingFile = Join-Path $PSScriptRoot ..\..\ "ACSAgentHub\local.settings.json"
-$resolvedPath = Resolve-Path $acsAgentHubAppSettingFile
+$acsAgentHubAppSettingFile = Join-Path $PSScriptRoot ..\..\ "ACSAgentHub\local.settings.json" -Resolve
 
-Write-Host "Updating " $resolvedPath -NoNewline -ForegroundColor Green
-if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host '$agentHubAppsettings = Invoke-Expression "& ''$(Join-Path '$PSScriptRoot' ''create_agent_hub_appsettings.ps1'')'' -resourceGroup '$resourceGroup' -acsConnectionString ""'$acsConnectionString'"" -wpsConnectionString ""'$wpsConnectionString'"" -storageConnectionString ""'$storageConnectionString'"" "'}
+Write-Host "Updating " $acsAgentHubAppSettingFile -NoNewline -ForegroundColor Green
+if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host '$agentHubAppsettings = Invoke-Expression "& ''$(Join-Path '$PSScriptRoot' ''create_agent_hub_appsettings.ps1'' -Resolve)'' -resourceGroup '$resourceGroup' -acsConnectionString ""'$acsConnectionString'"" -wpsConnectionString ""'$wpsConnectionString'"" -storageConnectionString ""'$storageConnectionString'"" "'}
 $acsAgentHubLocalSettings = Get-Content $acsAgentHubAppSettingFile -Encoding UTF8 | ConvertFrom-Json -Depth 10
 
 $acsAgentHubLocalSettings.Values.agentHubStorageConnectionString = $storageConnectionString

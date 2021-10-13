@@ -4,11 +4,20 @@ Run this script from the ACSAgentHub project folder (i.e., the one that has ACSA
 
 #Requires -Version 6
 
+# Usage:
+# The following command deploys and configures an agent hub named TestHubRHW21 to run locally
+# .\Deployment\Scripts\deploy_and_configure.ps1 -hubName TestHubRHW21 -resourceGroup JustTesting21 -location eastus -NuGetFullPath c:\nuget\nuget.exe
+# 
+# The following command just configures the agent hub named TestHubRHW21 to run locally but does not deploy any services. Use this command
+# re-setup you local environment when you are resuming work on your project.  It restarts all the necessary services and to configure the 
+# Event Grid Message subscription with the ngrok endpoint to the Function App that was started by this script and is running locally
+# .\Deployment\Scripts\deploy_and_configure.ps1 -hubName TestHubRHW21 -resourceGroup JustTesting21 -configurationOnly true
+
 Param(
     [string] $hubName,
     [string] $resourceGroup,
+    [string] $configurationOnly = "false", # Just configure things to run locally, but don't deploy (remaining params are not needed with -restart command)
     [string] $location,
-    [string] $restart = "false",
     [string] $NuGetFullPath,
     [string] $connectorPackageVersion = "1.0.0",
     [string] $showCommands = "false",
@@ -36,7 +45,7 @@ if (-not $resourceGroup) {
     $resourceGroup = $hubName
 }
 
-if (-not $location) {
+if (-not $location -and $configurationOnly.ToLower() -eq "false") {
     $location = Read-Host "? Azure resource group region"
 }
 
@@ -56,7 +65,9 @@ $errCnt = 0
 
 # Step 2 - Deploy ACS Agent Hub
 # No need for Write-Host progress update since deploy_acs_agent_hub.ps1 reports its own status
-.\Deployment\Scripts\deploy_acs_agent_hub.ps1 -hubName $hubName -location $location -resourceGroup $resourceGroup -NuGetFullPAth $NuGetFullPath -connectorPackageVersion $connectorPackageVersion -showCommands $showCommands
+if ($configurationOnly.ToLower() -eq "false") {
+  .\Deployment\Scripts\deploy_acs_agent_hub.ps1 -hubName $hubName -location $location -resourceGroup $resourceGroup -NuGetFullPAth $NuGetFullPath -connectorPackageVersion $connectorPackageVersion -showCommands $showCommands
+}
 
 # Step 3 - Start Agent Hub Service
 Write-Host "Starting Agent Hub service" -NoNewline -ForegroundColor Green
@@ -64,37 +75,44 @@ Write-Host "Starting Agent Hub service" -NoNewline -ForegroundColor Green
 Set-Location $ACSAgentHubPath
 start -FilePath "func" -ArgumentList "start" -WindowStyle Minimized
 # Sleep before continuing to ensure Function App time is fully up and running or else Create Agent Account step will fail
-Start-Sleep -s 120
+if ($configurationOnly.ToLower() -eq "false") {
+  Start-Sleep -s 120
+} else {
+  Start-Sleep -s 15 # We'll try a shorter sleep when restarting services and see show that goes but service needs to be up before Web PubSub initialization
+}
+
 if ($?) {Write-Host " - Done." -ForegroundColor Green} else {Write-Host " - Failed" -ForegroundColor Green; $errCnt++} 
 
 Set-Location $solutionRoot
 
 # Step 4 - Create Agent Accounts
-Write-Host "Creating agent account for agent 1"  -NoNewline -ForegroundColor Green
-if ($showCommands.ToLower() -eq "true") { Write-Host ''; Write-Host 'curl -X POST http://localhost:7071/api/agents -H \"Content-Type:application/json\" -d ''{ \"id\": \"1\", \"name\": \"Agent 1\", \"status\": 1, \"skills\": [ \"skill 1\", \"skill 2\", \"skill 3\" ] }''' }
-curl -X POST http://localhost:7071/api/agents `
-    -H "Content-Type:application/json" `
-    -d '{
-    \"id\": \"1\",
-    \"name\": \"Agent 1\",
-    \"status\": 1,
-    \"skills\": [ \"skill 1\", \"skill 2\", \"skill 3\" ] 
-    }'
+if ($configurationOnly.ToLower() -eq "false") {
+  Write-Host "Creating agent account for agent 1"  -NoNewline -ForegroundColor Green
+  if ($showCommands.ToLower() -eq "true") { Write-Host ''; Write-Host 'curl -X POST http://localhost:7071/api/agents -H \"Content-Type:application/json\" -d ''{ \"id\": \"1\", \"name\": \"Agent 1\", \"status\": 1, \"skills\": [ \"skill 1\", \"skill 2\", \"skill 3\" ] }''' }
+  curl -X POST http://localhost:7071/api/agents `
+      -H "Content-Type:application/json" `
+      -d '{
+      \"id\": \"1\",
+      \"name\": \"Agent 1\",
+      \"status\": 1,
+      \"skills\": [ \"skill 1\", \"skill 2\", \"skill 3\" ] 
+      }'
 
-if ($?) {Write-Host " - Done." -ForegroundColor Green} else {Write-Host " - Failed" -ForegroundColor Green; $errCnt++} 
+  if ($?) {Write-Host " - Done." -ForegroundColor Green} else {Write-Host " - Failed" -ForegroundColor Green; $errCnt++} 
 
-Write-Host "Creating agent account for agent 2"  -NoNewline -ForegroundColor Green
-if ($showCommands.ToLower() -eq "true") { Write-Host ''; Write-Host 'curl -X POST http://localhost:7071/api/agents -H \"Content-Type:application/json\" -d ''{ \"id\": \"2\", \"name\": \"Agent 2\", \"status\": 1, \"skills\": [ \"skill 1\", \"skill 2\", \"skill 3\" ] }''' }
-curl -X POST http://localhost:7071/api/agents `
-    -H "Content-Type:application/json" `
-    -d '{
-    \"id\": \"2\",
-    \"name\": \"Agent 2\",
-    \"status\": 1,
-    \"skills\": [ \"skill 1\", \"skill 2\", \"skill 3\" ] 
-    }'
+  Write-Host "Creating agent account for agent 2"  -NoNewline -ForegroundColor Green
+  if ($showCommands.ToLower() -eq "true") { Write-Host ''; Write-Host 'curl -X POST http://localhost:7071/api/agents -H \"Content-Type:application/json\" -d ''{ \"id\": \"2\", \"name\": \"Agent 2\", \"status\": 1, \"skills\": [ \"skill 1\", \"skill 2\", \"skill 3\" ] }''' }
+  curl -X POST http://localhost:7071/api/agents `
+      -H "Content-Type:application/json" `
+      -d '{
+      \"id\": \"2\",
+      \"name\": \"Agent 2\",
+      \"status\": 1,
+      \"skills\": [ \"skill 1\", \"skill 2\", \"skill 3\" ] 
+      }'
 
-if ($?) {Write-Host " - Done." -ForegroundColor Green} else {Write-Host " - Failed" -ForegroundColor Green; $errCnt++} 
+  if ($?) {Write-Host " - Done." -ForegroundColor Green} else {Write-Host " - Failed" -ForegroundColor Green; $errCnt++} 
+}
 
 # Step 5 - Create Tunnel to Agent Hub
 Write-Host "Creating Tunnel to Agent Hub"  -NoNewline -ForegroundColor Green
@@ -131,20 +149,25 @@ else
     Write-Host "Subscribing to ACS Message Event - Failed" -ForegroundColor Green; $errCnt++
 }
 
-# Step 7 - Install npm Packages
-Write-Host "Installing npm Packages... this step takes awhile"  -NoNewline -ForegroundColor Green
-# First, switch to agent-portal folder
+# Switch to agent-portal folder
 Set-Location $agentPortalPath
 
-# Next, install npm packages
-npm install 2>> "$logFile" | Out-Null
+# Step 7 - Install npm Packages
+if ($configurationOnly.ToLower() -eq "false") {
+  Write-Host "Installing npm Packages... this step takes awhile"  -NoNewline -ForegroundColor Green
 
-Write-Host " - Done." -ForegroundColor Green 
+  # Next, install npm packages
+  npm install 2>> "$logFile" | Out-Null
+
+  Write-Host " - Done." -ForegroundColor Green 
+}
 
 # Step 8 - Launch Agent-Portal
 # Launch agent-portal so its ready to use
 Write-Host "Launching the agent portal in the browser. Note - initial app startup takes awhile" -ForegroundColor Green
-Start-Sleep -s 2
+if ($configurationOnly.ToLower() -eq "false") {
+  Start-Sleep -s 10 # don't sleep when restarting since packages will already have been deployed
+}
 start -FilePath "npm" -ArgumentList "start" -WindowStyle Minimized
 
 # Fainally, switch to agent-hub project folder

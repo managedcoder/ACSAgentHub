@@ -4,7 +4,7 @@ Param(
     [string] $hubName,
     [string] $resourceGroup,
     [string] $showCommands = "false", 
-    [string] $logfile = $(Join-Path $PSScriptRoot .. "deploy_log.txt")
+    [string] $logfile = $(Join-Path $PSScriptRoot .. "deploy_log.txt" -Resolve)
  )
 
 # Create App Service Plan for Azure Function
