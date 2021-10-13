@@ -127,7 +127,5 @@ the deploy.ps1 script using the following relative path:
 ```
 .\Deployment\Scripts\deploy.ps1 -name <name of bot> -location <region> -appPassword <password> -createLuisAuthoring -luisAuthoringRegion westus
 ```
-This script deploys and configures all the services required by the virtual assistant.  
-The name of the bot must be Internet-unique and the location is a region name 
-line **eastus** and the password must be 16 characters long and the -luisAuthoringRegion
-parameter must be **westus** for US deployments.
+This script deploys and configures all the services required by the virtual assistant and you can use the
+Bot Framework Emulator to explore the same esclation scenarios as shown with the Composer bot.
