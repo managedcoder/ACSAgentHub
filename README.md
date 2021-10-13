@@ -91,8 +91,8 @@ to your bot as shown in the following screen shots, respectively<br>
 2) **Add an Escalation Action** - Add a _**Send handoff activity**_ action to any dialog and at wherever point makes
 sense for your bot<br> 
 ![High-level Subsystem Overview](doc/EscalateAction.png)
-3) **Set Escalation Action Properties** - Paste the following escalation payload into **Context** property of escalation action and set **Transcription**
-to ```=null``` as shown below: <br>
+3) **Set Escalation Action Properties** - Paste the following escalation payload into the **Context** property of escalation action and set **Transcription**
+to ```=null```:<br>
 ```
 {
   "Skill": "<skill 1> <skill 2> <skill N>",
@@ -106,6 +106,7 @@ unique for LivePerson or Omnichannel and you'd check their documentation to find
 the this agent hub solution you'll use the above payload.  Currently, the **Skill** and **CustomerType** are not
 being used and can be set to whatever you like or left empty.  The **Name** and **WhyTheyNeedHelp** properties
 are used in the agent-portal and the ComposerExample shows a nice way to gather and set those properties.<br>
+Its should look like this after you've set those properties:>br>
 ![High-level Subsystem Overview](doc/EscalationProperties.png)
 4) **Set App Setting** - Paste the following at the top of the bot's appsettings.json file:<br>
 ```
