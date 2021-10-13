@@ -62,8 +62,8 @@ configure all the services required by the ACS Agent Hub:
 .\Deployment\Scripts\deploy_and_configure.ps1 -hubName <hub name> -resourceGroup <resource group> -location <location name> -NuGetFullPath <nuget path>
 ```
 where:
-- **\<hub name>** is the name of your agent hub which will used in creating the various
-required services
+- **\<hub name>** is the name of your agent hub which will also be used as part of the name of
+other services created by this script
 - **\<resource group>** is the name of the resource group that services will be deployed to
 - **\<location name>** is the Azure location name of the region that services will be deployed in
 - **\<nuget path>** is the full path to the nuget.exe (e.g., c:\nuget\nuget.exe)

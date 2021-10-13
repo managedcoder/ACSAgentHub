@@ -2,7 +2,7 @@
 Run this script from the ACSAgentHub project folder (i.e., the one that has ACSAgentHub.csproj)
 #>
 
-#Requires -Version 6
+#Requires PoserShell 7
 
 # Usage:
 # The following command deploys and configures an agent hub named TestHubRHW21 to run locally
