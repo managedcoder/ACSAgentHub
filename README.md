@@ -96,7 +96,7 @@ unique for LivePerson or Omnichannel and you'd check their documentation to find
 the this agent hub solution you'll use the above payload.  Currently, the **Skill** and **CustomerType** are not
 being used and can be set to whatever you like or left empty.  The **Name** and **WhyTheyNeedHelp** properties
 are used in the agent-portal and the ComposerExample shows a nice way to gather and set those properties.<br>
-
+![High-level Subsystem Overview](doc/EscalationProperties.png)
 3) **Set App Setting** - Paste the following into the bot's appsettings.json:<br>
 ```
   "ACSConnector": {
