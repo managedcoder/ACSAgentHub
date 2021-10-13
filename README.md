@@ -109,6 +109,7 @@ you like or left empty.  The **Name** and **WhyTheyNeedHelp** properties are use
 ComposerExample shows a nice way to gather and set those properties.  When you're finished, it should look like
 this:<br>
 ![High-level Subsystem Overview](doc/EscalationProperties.png)
+
 4) **Set App Setting** - Paste the following at the top of the bot's appsettings.json file:<br>
 ```
   "ACSConnector": {
