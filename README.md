@@ -37,9 +37,17 @@ To install Azure Function Core Tools v3.X you'll need to download and run the Co
 * [v3.x - Windows 64-bit](https://go.microsoft.com/fwlink/?linkid=2135274)
 * [v3.x - Windows 32-bit](https://go.microsoft.com/fwlink/?linkid=2135275)
 
+#### Install Bot Framework Composer
+The ACS Agent Hub works with any kind of bot built on the Microsoft Conversational AI platform (PVA, Composer, 
+Virtual Assistant Template, or SDK bot) but the quickest and easyiest way to get up and running is to use the
+Composer sample included in this solution and to do that you'll need to install the Bot Framework Composer
+[here](https://docs.microsoft.com/en-us/composer/install-composer?tabs=windows)
+
 ### <a name="GettingStarted"></a>Getting Started
 
-After taking care of the [prerequisites](#Prerequisites), do the following:
+Getting started couldn't be easier.  Simply clone the repo and run a deployment script and you're ready
+to run the sample app and try out all the escalation scenarios shown in this [demo video](http://add-demo-here).
+The deployment script does require that you've taking care of the [prerequisites](#Prerequisites) or it will fail.
 
 1) **Clone the ACS Agent Hub Repo**  
 Open PowerShell and run the following command:
@@ -54,93 +62,47 @@ configure all the services required by the ACS Agent Hub:
 .\Deployment\Scripts\deploy_and_configure.ps1 -hubName <hub name> -resourceGroup <resource group> -location <location name> -NuGetFullPath <nuget path>
 ```
 where:
-- <hub name> is the name of your agent hub which will used in creating the various
+- **\<hub name>** is the name of your agent hub which will used in creating the various
 required services
-- <resource group> is the name of the resource group that services will be deployed to
-- <location name> is the Azure location name of the region that services will be deployed in
-- <nuget path> is the full path to the nuget.exe (e.g., c:\nuget\nuget.exe)
+- **\<resource group>** is the name of the resource group that services will be deployed to
+- **\<location name>** is the Azure location name of the region that services will be deployed in
+- **\<nuget path>** is the full path to the nuget.exe (e.g., c:\nuget\nuget.exe)
 
-3) **Start Agent Hub Service**  
-The core agent hub logic lives in a set APIs in the ACSAgentHub Azure Function project and
-to quickly test things you can run it locally.  In PowerShell, change the current directory
-to the ACSAgentHub project folder.  This project folder is a subfolder of the solution
-folder you used in previous step so you'll need to ```cd ACSAgentHub``` where the
-.\ACSAgentHub\ACSAgentHub.csproj file lives and then run the following command:
-```
-func start
-```
-4) **Create Agent Account**  
-In PowerShell, create an agent in Azure Storage by running the Curl command below. You'll
-need to add at least one agent to be able to sign in to the agent-portal.
-```
-   curl -X POST http://localhost:7071/api/agents `
-     -H "Content-Type:application/json" `
-     -d '{
-       \"id\": \"1\",
-       \"name\": \"Agent 1\",
-       \"status\": 1,
-       \"skills\": [ \"skill 1\", \"skill 2\", \"skill 3\" ] 
-     }'
-```
-**Note:** The syntax for the version of Curl that distributes with Windows requires special quoting that would need to
-be modified to run this with a non-Windows version of Curl
+### <a name="ExploreEscalationScenarios"></a>Explore Escalation Scenarios
+Open the Bot Framework Composer and select the **Open** link on the Home tab and open the ComposerExample that's in
+the root folder of the solution. This is a very simple bot with an Escalate trigger that you can look at to see how
+to code an escalation and then try it out by using the **Start bot** command.  After the bot starts, choose the
+**Open Web Chat** option in the flyout menu that appears when the bot finishes it's startup processing.  Type, _**talk
+to human**_ to start an escalation experience.  There's a short [demo video](http://add-demo-here) you can watch that
+shows all these steps and various escalation and agent management scenaios you can replicate using this sample app.
 
-5) **Create Tunnel to Agent Hub**  
-For this step, open a separate Command Promt and run the following command to create a 
-tunnel for use later when you subscribe message events. The ngrok command does not return 
-and instead listens for endpoint traffic.  The tunnel that ngrok exposes will be live and
-accessible as long as that Command Prompt is open. We'll use this tunnel to bridge agent
-messages to their corresponding bot user.
+### <a name="AddingEscalationToYourBot"></a>Adding Escalation to Your Bot
+Adding agent escalation to a Composer bot is very simple and only involves a few steps:
+1) **Install Package** - Use the package manager to install the ACSConnector package
+2) **Add Escalation Action** - Add a _**Send handoff activity**_ action to any dialog and wherever it makes sense in your bo<br> 
+![High-level Subsystem Overview](doc/EscalateAction.png)
+3) **Set Escalation Action Properties** - Paste the following escalation payload into **Context** property of escalation action and set **Transcription**
+to ```=null``` as shown below: <br>
 ```
-c:\ngrok\ngrok http 7071 -host-header=localhost:7071
+{
+  "Skill": "<skill 1> <skill 2> <skill N>",
+  "Name": "<bot user's name>",
+  "CustomerType": "<customer class (e.g., vip, premium, etc.>",
+  "WhyTheyNeedHelp": "<reason for help request>"
+}
 ```
-6) **Subscribe to ACS Message Event**  
-Open PowerShell and change the current directory to the root project folder (i.e., the one that contains the
-ContactCenter.sln file.  Run the following script and pass the ngrok endpoint (the https version) to have
-Event Grid call the bot's messaging webhook when agents chat:
-```
-.\Deployment\Scripts\update_webhook.ps1 -hubName <hub name> -endpoint "https://<############>.ngrok.io/api/agenthub/messagewebhook"
-```
-Where \<hub name\> is the same name you used earlier when you ran the deploy.ps1 script.
+The properties and values above are defined by the agent hub you're escalating to.  So, for example, the payload
+unique for LivePerson or Omnichannel and you'd check their documentation to find out what that is but for
+the this agent hub solution you'll use the above payload.  Currently, the **Skill** and **CustomerType** are not
+being used and can be set to whatever you like or left empty.  The **Name** and **WhyTheyNeedHelp** properties
+are used in the agent-portal and the ComposerExample shows a nice way to gather and set those properties.<br>
 
-7) **Install npm Packages**  
-Open a new command prompt window and from the agent-portal's project folder (the one that contains package.json), run the following command:<br><br>
+3) **Set App Setting** - Paste the following into the bot's appsettings.json:<br>
 ```
-npm install
+  "ACSConnector": {
+    "acsAgentHubBaseAddress": "http://localhost:7071"
+  },
 ```
-8) **Launch Agent-Portal**  
-In the command prompt window you opened in the previous step, run the following command:
-```
-npm start
-```
-It will take a minute or two for npm to build the agent-portal and start it in the browser but when it does you'll be able to sign 
-in as one of the agents in the list.  Once you've successfully signed in you'll see an empty list of conversations and the window 
-will look something like this:<br><br>
-![Initial Agent Portall](doc/InitialAgentPortal.png)
-
-9) **Add ACS Agent Escalation to Your Bot (optional)**
-You can add ACS agent escalation to your existing bot or create a new bot using the bot template of your choice and then add
-escalation to it.  Alternatively, you can use one of the ready-made bot examples (ComposerExample or VATemplateExample) which
-already has escalation integrated and skip past this step.
-
-For a detailed explanation of how to add escalation to an new or existing bot, see the XXX section in this README.
-
-10) **Launch Bot Emulator and Escalate to Agent**  
-Launch bot emulator and select **File | New Bot Configuration** and enter a name for the emulator profile then enter
-http://localhost:3978/api/messages in the **Endpoint URL** field.  You'll also need to enter the **Microsoft App ID** and **password** 
-from the appsettings.json file in the root folder for the VATemplateExample project. When you've entered those values, click the
-**Save and connect** button and, for convience, save the profile in the VATemplateExample's project folder (it's gitignored).<br><br>
-![New bot configuration dialog](doc/NewBotEmulatorConfigDialog.png)<br><br>
-After you've successfully launched the bot emulator and you've seen the Welcome prompt, type the following into the bot emulator's 
-message field:<br><br>```talk to human```<br><br>
-Follow the conversational prompts to escalate conversation.
-
-11) **Accept the Escalation**  
-After you have successfully escalated to an agent in the bot emulator, switch to agent portal and click the green answer button to
-accept the escalation request and take ownership of the conversation.
-
-11) **Chat Back and Forth**  
-Type messages in the agent-portal and the bot emulator and when finished click the hangup button
 
 ### <a name="AddingAgentEscalationToNewOrExistingBot"></a>Appendix A: Agent Escalation in a VA Template Bot
 If you want to add agent escalation to a Virtual Assistant Template bot, you can explore
