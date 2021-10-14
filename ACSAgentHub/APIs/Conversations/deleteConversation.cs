@@ -26,7 +26,7 @@ namespace ACSAgentHub.APIs.Conversations
 
         [FunctionName("DeleteConversation")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "conversations/{acsThreadId}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "conversations/{acsThreadId}")] HttpRequest req,
             ExecutionContext context,
             ILogger log,
             string acsThreadId)

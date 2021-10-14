@@ -24,7 +24,7 @@ namespace ACSAgentHub.APIs.Agents
 
         [FunctionName("getAgent")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "agents/{agentId}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "agents/{agentId}")] HttpRequest req,
             ILogger log,
             string agentId)
         {

@@ -29,7 +29,7 @@ namespace ACSAgentHub.APIs.Access
         /// <returns></returns>
         [FunctionName("getBotAccessContext")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "botAccessContext")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "botAccessContext")] HttpRequest req,
             ExecutionContext context,
             ILogger log)
         {

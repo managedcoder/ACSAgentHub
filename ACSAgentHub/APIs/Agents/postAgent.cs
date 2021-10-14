@@ -27,7 +27,7 @@ namespace ACSAgentHub.APIs.Agents
 
         [FunctionName("postAgent")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "agents")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "agents")] HttpRequest req,
             ILogger log)
         {
             IActionResult result = null;

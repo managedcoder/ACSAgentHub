@@ -29,7 +29,7 @@ namespace ACSAgentHub.APIs.Access
         /// <returns></returns>
         [FunctionName("getEndUserAccessContext")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "EndUserAccessContext")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "EndUserAccessContext")] HttpRequest req,
             ExecutionContext context,
             ILogger log)
         {

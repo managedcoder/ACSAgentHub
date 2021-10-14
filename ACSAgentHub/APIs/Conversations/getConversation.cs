@@ -24,7 +24,7 @@ namespace ACSAgentHub.APIs.Conversations
 
         [FunctionName("getConversation")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "conversations/{acsThreadId}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "conversations/{acsThreadId}")] HttpRequest req,
             ILogger log,
             string acsThreadId)
         {

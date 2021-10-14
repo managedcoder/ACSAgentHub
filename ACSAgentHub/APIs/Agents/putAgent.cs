@@ -23,7 +23,7 @@ namespace ACSAgentHub.APIs.Agents
 
         [FunctionName("putAgent")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "agents")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "agents")] HttpRequest req,
             ILogger log)
         {
             IActionResult result = null;

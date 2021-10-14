@@ -25,7 +25,7 @@ namespace ACSAgentHub.APIs.Messages
 
         [FunctionName("postMessageToAgent")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "conversations/{acsThreadId}/messageToAgent")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "conversations/{acsThreadId}/messageToAgent")] HttpRequest req,
             ExecutionContext context,
             ILogger log,
             string acsThreadId)

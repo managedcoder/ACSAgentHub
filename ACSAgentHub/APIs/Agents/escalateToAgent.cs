@@ -25,7 +25,7 @@ namespace ACSAgentHub.APIs.Agents
 
         [FunctionName("escalateToAgent")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
             HttpRequest req,
             ILogger log)
         {

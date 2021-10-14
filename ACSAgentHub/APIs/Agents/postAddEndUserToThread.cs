@@ -22,7 +22,7 @@ namespace ACSAgentHub.APIs.Agents
 
         [FunctionName("postAddEndUserToThread")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "AddEndUserToThread/{threadId}/{displayName}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "AddEndUserToThread/{threadId}/{displayName}")] HttpRequest req,
             ILogger log,
             string threadId,
             string displayName)

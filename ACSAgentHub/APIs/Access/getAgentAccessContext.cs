@@ -37,7 +37,7 @@ namespace ACSAgentHub.APIs.Access
         /// </remarks>
         [FunctionName("getAgentAccessContext")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "agentAccessContext")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "agentAccessContext")] HttpRequest req,
             ILogger log)
         {
             (CommunicationUserIdentifier user, string token) userAndToken;

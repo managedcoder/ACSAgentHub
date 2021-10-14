@@ -54,7 +54,7 @@ namespace ACSAgentHub.APIs.Messages
         /// </remarks>
         [FunctionName("postMessageToBot")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "agenthub/messageWebhook")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "agenthub/messageWebhook")] HttpRequest req,
             ILogger log)
         {
             IActionResult result = new OkResult();
