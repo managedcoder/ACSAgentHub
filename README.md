@@ -88,10 +88,18 @@ that you might find easier to follow.
 to your bot as shown in the following screen shots, respectively<br>
 ![High-level Subsystem Overview](doc/CreatingLocalFeed.png)<br>
 ![High-level Subsystem Overview](doc/InstallingACSConnector.png)
-2) **Add an Escalation Action** - Add a _**Send handoff activity**_ action to any dialog and at wherever point makes
+2) **Set App Setting** - Paste the following at the top of the bot's appsettings.json file:<br>
+```
+  "ACSConnector": {
+    "acsAgentHubBaseAddress": "http://localhost:7071"
+  },
+```
+![High-level Subsystem Overview](doc/AppSettings.png)
+
+3) **Add an Escalation Action** - Add a _**Send handoff activity**_ action to any dialog and at wherever point makes
 sense for your bot<br> 
 ![High-level Subsystem Overview](doc/EscalateAction.png)
-3) **Set Escalation Action Properties** - Paste the following escalation payload into the **Context** property of escalation action and set **Transcription**
+4) **Set Escalation Action Properties** - Paste the following escalation payload into the **Context** property of escalation action and set **Transcription**
 to ```=null```:<br>
 ```
 {
@@ -109,14 +117,6 @@ you like or left empty.  The **Name** and **WhyTheyNeedHelp** properties are use
 ComposerExample shows a nice way to gather and set those properties.  When you're finished, it should look like
 this:<br>
 ![High-level Subsystem Overview](doc/EscalationProperties.png)
-
-4) **Set App Setting** - Paste the following at the top of the bot's appsettings.json file:<br>
-```
-  "ACSConnector": {
-    "acsAgentHubBaseAddress": "http://localhost:7071"
-  },
-```
-![High-level Subsystem Overview](doc/AppSettings.png)
 
 ### <a name="AddingAgentEscalationToNewOrExistingBot"></a>Appendix A: Agent Escalation in a VA Template Bot
 If you want to add agent escalation to a Virtual Assistant Template bot, you can explore
