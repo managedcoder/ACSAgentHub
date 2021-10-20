@@ -78,7 +78,7 @@
           "$kind": "Microsoft.SendHandoffActivity",
           "$designer": {
             "id": "6RC9sf",
-            "comment": "Handoff to ACS"
+            "comment": ""
           },
           "context": {
             "Skill": "offshore accouts",

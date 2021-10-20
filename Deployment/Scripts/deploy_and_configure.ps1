@@ -2,7 +2,7 @@
 Run this script from the ACSAgentHub project folder (i.e., the one that has ACSAgentHub.csproj)
 #>
 
-#Requires PoserShell 7
+# Requires PowerShell 7
 
 # Usage:
 # The following command deploys and configures an agent hub named TestHubRHW21 to run locally
@@ -16,6 +16,7 @@ Run this script from the ACSAgentHub project folder (i.e., the one that has ACSA
 Param(
     [string] $hubName,
     [string] $resourceGroup,
+    [string] $ngrokFullPath,
     [string] $configurationOnly = "false", # Just configure things to run locally, but don't deploy (remaining params are not needed with -restart command)
     [string] $location,
     [string] $NuGetFullPath,
@@ -43,6 +44,10 @@ if (-not $hubName) {
 
 if (-not $resourceGroup) {
     $resourceGroup = $hubName
+}
+
+if (-not $ngrokFullPath) {
+    $ngrokFullPath = Read-Host "? Full path to ngrok.exe (e.g., c:\ngrok\ngrok.exe):"
 }
 
 if (-not $location -and $configurationOnly.ToLower() -eq "false") {
@@ -116,7 +121,7 @@ if ($configurationOnly.ToLower() -eq "false") {
 
 # Step 5 - Create Tunnel to Agent Hub
 Write-Host "Creating Tunnel to Agent Hub"  -NoNewline -ForegroundColor Green
-start -FilePath "c:\ngrok\ngrok" -ArgumentList "http 7071 -host-header=localhost:7071" -WindowStyle Minimized 
+start -FilePath $ngrokFullPath -ArgumentList "http 7071 -host-header=localhost:7071" -WindowStyle Minimized 
 
 if ($?) {Write-Host " - Done." -ForegroundColor Green} else {Write-Host " - Failed" -ForegroundColor Green; $errCnt++} 
 

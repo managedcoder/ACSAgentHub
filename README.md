@@ -59,12 +59,13 @@ In PowerShell, change the current directory to the root solution folder (i.e., t
 that contains the ACSAgentHub.sln file). Then run the following script to deploy and
 configure all the services required by the ACS Agent Hub:
 ```
-.\Deployment\Scripts\deploy_and_configure.ps1 -hubName <hub name> -resourceGroup <resource group> -location <location name> -NuGetFullPath <nuget path>
+.\Deployment\Scripts\deploy_and_configure.ps1 -hubName <hub name> -resourceGroup <resource group> $ngrokFullPath <ngrok path> -location <location name> -NuGetFullPath <nuget path>
 ```
 where:
 - **\<hub name>** is the name of your agent hub which will also be used as part of the name of
 other services created by this script
 - **\<resource group>** is the name of the resource group that services will be deployed to
+- **\<ngrok path>** is the full path to the ngrok.exe (e.g., c:\nuget\ngrok.exe)
 - **\<location name>** is the Azure location name of the region that services will be deployed in
 - **\<nuget path>** is the full path to the nuget.exe (e.g., c:\nuget\nuget.exe)
 
@@ -103,15 +104,18 @@ sense for your bot<br>
 to ```=null```:<br>
 ```
 {
-  "Skill": "<skill 1> <skill 2> <skill N>",
-  "Name": "<bot user's name>",
-  "CustomerType": "<customer class (e.g., vip, premium, etc.>",
-  "WhyTheyNeedHelp": "<reason for help request>"
+  "Skill": "offshore accounts",
+  "Name": "Test Name",
+  "CustomerType": "vip",
+  "WhyTheyNeedHelp": "lost order"
 }
 ```
 The properties and values above are defined by the agent hub you're escalating to.  So, for example, the payload
 is unique to LivePerson or Omnichannel and you'd check their documentation to find out what the payload should
-look like for those agent hub solutions but, for the ACS Agent Hub you'll use the above payload.  Currently, 
+look like for those agent hub solutions but, for the ACS Agent Hub you'll use the above payload and replace the
+hardcoded sample values with the appropriate values (use the values above if you are just experimenting).  
+
+Currently, 
 the **Skill** and **CustomerType** properties are not being used by the ACS Agent Hub and can be set to whatever
 you like or left empty.  The **Name** and **WhyTheyNeedHelp** properties are used in the agent-portal and the 
 ComposerExample shows a nice way to gather and set those properties.  When you're finished, it should look like
