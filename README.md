@@ -1,7 +1,9 @@
 # ACS Agent Hub
-The sample uses the Azure Communication Service and Azure Bot Service to implement a
-contact center "call deflection" pattern where multiple agents can simultaneously engage 
-with multiple customers in a ready-made agent portal that's also included in the solution
+This package integrates with a ready-made agent hub solution built on the Azure Communication Service that allows you to
+add human handoff experiences to your bot. Super simple to use, just add a Send Handoff Activity to your dialog and the
+ACSConnector takes care of the rest. Escalations will be sent to a ready-made agent hub that you clone from GitHub which
+allows multiple agents to handle multiple simultaneous conversations with bot users. Because it’s built purely from Azure
+Services, you can have an agent escalation capability up and working in 15 minutes or so.
 
 ### <a name="Prerequisites"></a>Prerequisites
 

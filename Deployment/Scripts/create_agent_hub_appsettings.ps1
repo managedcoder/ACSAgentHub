@@ -7,6 +7,7 @@ Param(
     [string] $wpsConnectionString,
     [string] $storageConnectionString,
     [string] $resourceGroup,
+    [string] $botBaseAddress = "http://localhost:3980/", # port 3978 is VA Template bots... port 3980 is Composer bots  
     [string] $showCommands = "false"
  )
 
@@ -18,7 +19,7 @@ $acsAgentHubLocalSettings = Get-Content $acsAgentHubAppSettingFile -Encoding UTF
 
 $acsAgentHubLocalSettings.Values.agentHubStorageConnectionString = $storageConnectionString
 $acsAgentHubLocalSettings.Values.acsConnectionString = $acsConnectionString
-$acsAgentHubLocalSettings.Values.botBaseAddress = "http://localhost:3978/"
+$acsAgentHubLocalSettings.Values.botBaseAddress = $botBaseAddress
 $acsAgentHubLocalSettings.Values.useACSManagedIdentity = "false"
 $acsAgentHubLocalSettings.Values.webPusSubConnectionString = $wpsConnectionString
 $acsAgentHubLocalSettings.Values.webPubSubHubName = "refreshConversations"

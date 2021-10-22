@@ -1,12 +1,16 @@
 # ACS Agent Hub
-The ACS Agent Hub package implements agent escalation and makes it extremely simple to
-add a human handoff capability to any bot.
+This package integrates with a ready-made agent hub solution built on the Azure Communication Service that allows
+you to add human handoff experiences to your bot. Super simple to use, just add a Send Handoff Activity to your
+dialog and the ACSConnector takes care of the rest. Escalations will be sent to a ready-made agent hub that you
+clone from GitHub which allows multiple agents to handle multiple simultaneous conversations with bot users.
+Because it's built purely from Azure Services, you can have an agent escalation capability up and working in 15
+minutes or so.
 
 ### Prerequisites
 Successful use of this package requires the installation of a set of prerequisites so if you haven't installed them
 yet, browse the the [ACS Agent Hub Prerequisites](http://aka.ms/acshub#prerequisites) and install them
 
-### <a name="GettingStarted"></a>Getting Started
+### Getting Started
 
 Getting started couldn't be easier.  Simply clone the ACS Agent Hub repo and run a single deployment script and 
 you're ready to run add escalation to your bot.  There are a variety of escalation scenarios you can support and
@@ -32,7 +36,7 @@ other services created by this script
 - **\<location name>** is the Azure location name of the region that services will be deployed in
 - **\<nuget path>** is the full path to the nuget.exe (e.g., c:\nuget\nuget.exe)
 
-### <a name="ExploreEscalationScenarios"></a>Explore Escalation Scenarios
+### Explore Escalation Scenarios
 To make it easy for you to quickly experiment with the ACS Agent Hub we've included sample applications that are all
 ready to go.  All you need to do to try it out is to open the Bot Framework Composer and select the **Open** link on
 the Home tab and open the ComposerExample that's in the root folder of the solution. This is a very simple bot with 
@@ -42,7 +46,7 @@ when the bot finishes it's startup processing.  Type, _**talk to human**_ to sta
 a short [demo video](http://add-demo-here) you can watch that shows all these steps and various escalation and agent
 management scenaios you can replicate using this sample app.
 
-### <a name="AddingEscalationToYourBot"></a>Adding Escalation to Your Bot
+### Adding Escalation to Your Bot
 The sample is nice for quickly experimenting with escalation and taking a look at how it's coded, but it doesn't 
 address how to add escalation to bots.  The good news is that adding agent escalation to a Composer bot is very 
 simple and only involves a few steps.  The following steps are shown in a very short video 
@@ -51,7 +55,7 @@ simple and only involves a few steps.  The following steps are shown in a very s
 1) **Install Agent Hub Package** - First, create a local feed and set its URL property to the full path of the
 .\ACSConnector\localFeed folder so Composer will know where find the package and second, add the ACSConnector package
 to your bot as shown in the following screen shots, respectively<br>
-![High-level Subsystem Overview](doc/CreatingLocalFeed.png)<br>
+![High-level Subsystem Overview](CreatingLocalFeed.png)<br>
 ![High-level Subsystem Overview](doc/InstallingACSConnector.png)
 2) **Set App Setting** - Paste the following at the top of the bot's appsettings.json file:<br>
 ```

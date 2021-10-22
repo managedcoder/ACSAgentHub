@@ -1,8 +1,6 @@
 ﻿using ACSAgentHubSDK.Models;
 using ACSConnector.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.EventGrid;
-using Microsoft.Azure.EventGrid.Models;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Bot.Connector;

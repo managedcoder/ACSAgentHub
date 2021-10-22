@@ -78,7 +78,7 @@ if ($configurationOnly.ToLower() -eq "false") {
 Write-Host "Starting Agent Hub service" -NoNewline -ForegroundColor Green
 # First, change working directory to the ACSAgentHub project folder
 Set-Location $ACSAgentHubPath
-start -FilePath "func" -ArgumentList "start" -WindowStyle Minimized
+start -FilePath "func" -ArgumentList "start --csharp" -WindowStyle Minimized
 # Sleep before continuing to ensure Function App time is fully up and running or else Create Agent Account step will fail
 if ($configurationOnly.ToLower() -eq "false") {
   Start-Sleep -s 120
