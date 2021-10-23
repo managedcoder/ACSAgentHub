@@ -8,6 +8,7 @@ using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,12 +31,15 @@ namespace ACSConnector.Controllers
         // This is the Id of the ACS service user for the agent user which we'll will use when accessing ACS services
         private static string _acsAgentUserId;
         AgentHubHttpClient _diInjectedHttpClient;
+        private readonly ConversationState _conversationState;
 
         public ACSController(IConfiguration configuration,
                              BotAdapter adapter,
                              IBot bot,
+                             ConversationState conversationState,
                              AgentHubHttpClient httpClient)
         {
+            _conversationState = conversationState ?? throw new ArgumentNullException(nameof(conversationState));
             _adapter = adapter;
             _bot = bot;
             _botAppId = configuration.GetSection(MicrosoftAppCredentials.MicrosoftAppIdKey)?.Value;
@@ -184,12 +188,50 @@ namespace ACSConnector.Controllers
             await adapter.ContinueConversationAsync(
                 msAppId,
                 conversationRef,
-                (ITurnContext proactiveContext, CancellationToken ct) =>
+                async (ITurnContext proactiveContext, CancellationToken ct) =>
                 {
                     using (var contextWithActivity = new TurnContext(adapter, activity))
                     {
                         contextWithActivity.TurnState.Add(proactiveContext.TurnState.Get<IConnectorClient>());
-                        return callback(proactiveContext, cancellationToken);
+                        await callback(proactiveContext, cancellationToken);
+
+                        if (contextWithActivity.Activity.Name == "handoff.status")
+                        {
+                            Activity replyActivity;
+                            var state = (contextWithActivity.Activity.Value as JObject)?.Value<string>("state");
+                            if (state == "typing")
+                            {
+                                replyActivity = new Activity
+                                {
+                                    Type = ActivityTypes.Typing,
+                                    Text = "agent is typing",
+                                };
+                            }
+                            else if (state == "accepted")
+                            {
+                                replyActivity = MessageFactory.Text("An agent has accepted the conversation and will respond shortly.");
+                                await _conversationState.SaveChangesAsync(contextWithActivity);
+                            }
+                            else if (state == "closed")
+                            {
+                                replyActivity = MessageFactory.Text("The agent has ended the conversation and you're now reconnected with the digital assistant");
+
+                                // Route the conversation based on whether it's been escalated
+                                var conversationStateAccessors = _conversationState.CreateProperty<EscalationRecord>(nameof(EscalationRecord));
+                                var escalationRecord = await conversationStateAccessors.GetAsync(contextWithActivity, () => new EscalationRecord()).ConfigureAwait(false);
+
+                                // End the escalation
+                                escalationRecord.EndEscalation();
+                                await _conversationState.SaveChangesAsync(contextWithActivity).ConfigureAwait(false);
+                            }
+                            else
+                            {
+                                replyActivity = MessageFactory.Text($"Conversation status changed to '{state}'");
+                            }
+
+                            await contextWithActivity.SendActivityAsync(replyActivity);
+                        }
+
                     }
                 },
                 cancellationToken).ConfigureAwait(false);

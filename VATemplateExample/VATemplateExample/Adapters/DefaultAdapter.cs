@@ -198,6 +198,14 @@ namespace VATemplateExample.Adapters
                             else if (state == "closed")
                             {
                                 replyActivity = MessageFactory.Text("The agent has ended the conversation and you're now reconnected with the digital assistant");
+
+                                // Route the conversation based on whether it's been escalated
+                                var conversationStateAccessors = _conversationState.CreateProperty<EscalationRecord>(nameof(EscalationRecord));
+                                var escalationRecord = await conversationStateAccessors.GetAsync(contextWithActivity, () => new EscalationRecord()).ConfigureAwait(false);
+
+                                // End the escalation
+                                escalationRecord.EndEscalation();
+                                await _conversationState.SaveChangesAsync(contextWithActivity).ConfigureAwait(false);
                             }
                             else
                             {

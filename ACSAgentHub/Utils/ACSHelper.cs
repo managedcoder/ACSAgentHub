@@ -444,8 +444,19 @@ namespace ACSAgentHub.Utils
             }
             else
             {
-                // The bot has no record of this conversation, this should not happen
-                throw new Exception("Cannot find conversation");
+                // The conversation could not be found.  This will happen on "echo" messages that bots send to
+                // agent hub since those messages work their way to the ACS ChatThread which then generates
+                // a "message received" event that the Event Grip is listening for.  Normally the "message
+                // received" will be the result of an agent sending a message that works it way to the 
+                // ACS Chat Thread and those messages are caught by Event Grid and then brokered over to the 
+                // bot.  But, when its the bot that sends a message to the agent, it has to go in the same
+                // ACS Chat Thread and that creates that "boomerang" or "echo" effect where the Event Grid
+                // send the message back to the bot that originally send it since it can't tell the difference
+                // between agent and bot messages.
+                //
+                // Since it is possible to see an "echoed" message from a closed conversation, we are not
+                // going to throw an exception since it's a situation that can occur and it's a performance
+                // killer so we'll just ignore this situation
             }
         }
 
