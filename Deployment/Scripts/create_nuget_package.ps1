@@ -85,8 +85,8 @@ if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPa
 & $NuGetFullPath delete ACSConnector $connectorPackageVersion -Source $acsConnectorLocalFeedFolder -NonInteractive 
 
 # Next, clear all NuGet caches in case we are overwriting existing versions of existing NuGet packages (this can cause runtime startup issues in Composer)
-if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath locals all -clear" }
-& $NuGetFullPath locals all -clear
+#if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath locals all -clear" }
+#& $NuGetFullPath locals all -clear
 
 # Next, add ACSConnector and its dependencies to local NuGet feed
 if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath add $acsAgentHubSDKNuGetPackage -Source $acsConnectorLocalFeedFolder" }

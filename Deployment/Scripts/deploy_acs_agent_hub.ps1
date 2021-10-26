@@ -121,7 +121,7 @@ mkdir -Force $acsConnectorLocalFeedFolder 2>> "$logFile" | Out-Null
 & $NuGetFullPath delete ACSConnector $connectorPackageVersion -Source $acsConnectorLocalFeedFolder -NonInteractive 2>> "$logFile" | Out-Null
 
 # Next, clear all NuGet caches in case we are overwriting existing versions of existing NuGet packages (this can cause runtime startup issues in Composer)
-& $NuGetFullPath locals all -clear 2>> "$logFile" | Out-Null
+#& $NuGetFullPath locals all -clear 2>> "$logFile" | Out-Null
 
 # Next, add ACSConnector and its dependencies to local NuGet feed
 if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath add $acsConnectorNuGetPackage -Source $acsConnectorLocalFeedFolder" }
