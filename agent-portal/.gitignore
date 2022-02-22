@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+// Has things in it that trigger GitHub key-leak detector so ignoring it
+package-lock.json
+
 # dependencies
 /node_modules
 /.pnp
