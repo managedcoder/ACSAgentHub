@@ -26,7 +26,7 @@ In PowerShell, change the current directory to the root solution folder (i.e., t
 that contains the ACSAgentHub.sln file). Then run the following script to deploy and
 configure all the services required by the ACS Agent Hub:
 ```
-.\Deployment\Scripts\deploy_and_configure.ps1 -hubName <hub name> -resourceGroup <resource group> $ngrokFullPath <ngrok path> -location <location name> -NuGetFullPath <nuget path>
+.\Deployment\Scripts\deploy_and_configure.ps1 -hubName <hub name> -resourceGroup <resource group> -ngrokFullPath <ngrok path> -location <location name> -NuGetFullPath <nuget path>
 ```
 where:
 - **\<hub name>** is the name of your agent hub which will also be used as part of the name of

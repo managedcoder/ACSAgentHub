@@ -121,7 +121,8 @@ if ($configurationOnly.ToLower() -eq "false") {
 
 # Step 5 - Create Tunnel to Agent Hub
 Write-Host "Creating Tunnel to Agent Hub"  -NoNewline -ForegroundColor Green
-start -FilePath $ngrokFullPath -ArgumentList "http 7071 -host-header=localhost:7071" -WindowStyle Minimized 
+if ($showCommands.ToLower() -eq "true") { Write-Host ''; Write-Host "start -FilePath $ngrokFullPath -ArgumentList ""http 7071 --host-header=localhost:7071"" -WindowStyle Minimized" }
+start -FilePath $ngrokFullPath -ArgumentList "http 7071 --host-header=localhost:7071" -WindowStyle Minimized 
 
 if ($?) {Write-Host " - Done." -ForegroundColor Green} else {Write-Host " - Failed" -ForegroundColor Green; $errCnt++} 
 
@@ -131,6 +132,7 @@ Start-Sleep -s 15 2>> "$logFile" | Out-Null
 # Step 6 - Subscribe to ACS Message Event
 # No need for Write-Host progress update since update_webhook.ps1 reports its own status
 # Frist, query ngrok and turn JSON result into object that we can use to get https endpoint
+if ($showCommands.ToLower() -eq "true") { Write-Host ''; Write-Host "$ngrokResult = curl http://127.0.0.1:4040/api/tunnels 2>> ""$logFile""" }
 $ngrokResult = curl http://127.0.0.1:4040/api/tunnels 2>> "$logFile"
 $ngrok = ConvertFrom-Json $ngrokResult 
 

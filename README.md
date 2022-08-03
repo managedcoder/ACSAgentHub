@@ -11,7 +11,11 @@ Services, you can have an agent escalation capability up and working in 15 minut
 The deployment scripts require Powershell 7 which can be downloaded [here](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.2)
 
 #### Ngrok
-To install ngrok, follow instructions [here](https://ngrok.com/download)
+To install ngrok v3, follow instructions [here](https://ngrok.com/download) or to upgrade your existing ngrok version, follow
+the instructions [here](https://ngrok.com/docs/guides/upgrade-v2-v3).  The previous version of the deployment scripts used 
+single dashes for ngrok command line flags which now fail in ngrok v3 per the "Breaking Changes" section on the ngrok site 
+[here](https://ngrok.com/docs/guides/upgrade-v2-v3) so those deployment scripts have been updated to use double dash flags
+which may or may not work with older versions of ngrok (e.g., c:\ngrok\ngrok http 7071 --host-header=localhost:7071)
 
 #### Azure CLI
 The deployment scripts require Azure CLI version 2.22.0 or newer.  You can check which version of the Azure CLI you have

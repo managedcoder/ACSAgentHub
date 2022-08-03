@@ -3,12 +3,13 @@ import './ChatPanel.css';
 import React, { FC } from 'react';
 import { useEffect, useState, useContext } from 'react';
 import { ChatAdapter, ChatComposite, createAzureCommunicationChatAdapter } from '@azure/communication-react';
+import { AzureCommunicationTokenCredential } from '@azure/communication-common';
 
-import { Conversation, ConversationStatus, Agent } from './Models'
+import { Conversation, ConversationStatus, Agent } from './Models';
 import { addAgentToThread } from '../services/agents';
 
 import { getAgentAccessContext } from '../services/accessContext';
-import { ApplicationContext, ApplicationContextConsumer } from './ApplicationContext'
+import { ApplicationContext, ApplicationContextConsumer } from './ApplicationContext';
 
 const ChatPanel: FC = () => {
     // Creating an adapter is asynchronous.
@@ -32,8 +33,14 @@ const ChatPanel: FC = () => {
         if (showChat(applicationContext!.currentConversation!) == true) {
             addAgentToThread(applicationContext!.currentConversation!.threadId!, applicationContext!.agent!.name).then(() => {
                 getAgentAccessContext().then(agentAccessContext => {
-                    createAzureCommunicationChatAdapter(agentAccessContext.token, agentAccessContext.endPoint, applicationContext!.currentConversation!.threadId, applicationContext!.agent!.name).then(adapter => { 
-                    setAdapter(adapter);
+                    createAzureCommunicationChatAdapter({
+                        endpoint: agentAccessContext.endPoint,
+                        displayName: applicationContext!.agent!.name,
+                        threadId: applicationContext!.currentConversation!.threadId,
+                        userId: { communicationUserId: applicationContext!.currentConversation!.agentId },
+                        credential: new AzureCommunicationTokenCredential(agentAccessContext.token)
+                    }).then(adapter => { 
+                        setAdapter(adapter);
                     });
                 });
             });
