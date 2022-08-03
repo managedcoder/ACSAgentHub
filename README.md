@@ -7,11 +7,19 @@ Services, you can have an agent escalation capability up and working in 15 minut
 
 ### <a name="Prerequisites"></a>Prerequisites
 
+#### Powershell 7
+The deployment scripts require Powershell 7 which can be downloaded [here](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.2)
+
 #### Ngrok
 To install ngrok, follow instructions [here](https://ngrok.com/download)
 
 #### Azure CLI
-The deployment scripts require Azure CLI version 2.22.0 or newer which you can install from [here](
+The deployment scripts require Azure CLI version 2.22.0 or newer.  You can check which version of the Azure CLI you have
+installed by running this command from command prompt:
+```
+az version
+```
+If you don't already have the Azure CLI installed, you can install it from [here](
 https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=azure-cli).
 
 #### Azure Communication Service CLI Extension
@@ -61,14 +69,14 @@ In PowerShell, change the current directory to the root solution folder (i.e., t
 that contains the ACSAgentHub.sln file). Then run the following script to deploy and
 configure all the services required by the ACS Agent Hub:
 ```
-.\Deployment\Scripts\deploy_and_configure.ps1 -hubName <hub name> -resourceGroup <resource group> $ngrokFullPath <ngrok path> -location <location name> -NuGetFullPath <nuget path>
+.\Deployment\Scripts\deploy_and_configure.ps1 -hubName <hub name> -resourceGroup <resource group> -ngrokFullPath <ngrok path> -location <location name> -NuGetFullPath <nuget path>
 ```
 where:
 - **\<hub name>** is the name of your agent hub which will also be used as part of the name of
 other services created by this script
 - **\<resource group>** is the name of the resource group that services will be deployed to
 - **\<ngrok path>** is the full path to the ngrok.exe (e.g., c:\nuget\ngrok.exe)
-- **\<location name>** is the Azure location name of the region that services will be deployed in
+- **\<location name>** is the Azure location name of the region that services will be deployed in (e.g., eastus)
 - **\<nuget path>** is the full path to the nuget.exe (e.g., c:\nuget\nuget.exe)
 
 ### <a name="ExploreEscalationScenarios"></a>Explore Escalation Scenarios

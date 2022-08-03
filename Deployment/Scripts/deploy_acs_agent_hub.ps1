@@ -112,22 +112,22 @@ Write-Host " - Done." -ForegroundColor Green
 Write-Host "Creating local NuGet feed for ACSConnector" -NoNewline -ForegroundColor Green
 $acsConnectorNuGetPackage = Join-Path $PSScriptRoot ..\..\ "ACSConnector\bin\Debug\ACSConnector.$connectorPackageVersion.nupkg" -Resolve
 $acsAgentHubSDKNuGetPackage = Join-Path $PSScriptRoot ..\.. "ACSAgentHubSDK\bin\Debug\ACSAgentHubSDK.$connectorPackageVersion.nupkg" -Resolve
-$acsConnectorLocalFeedFolder = join-Path $PSScriptRoot ..\..\ "ACSConnector\localFeed" -Resolve
+$acsConnectorLocalFeedFolder = join-Path $PSScriptRoot ..\..\ "ACSConnector" -Resolve
 # First, create folder for local NuGet feed
-if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "mkdir -Force $acsConnectorLocalFeedFolder"}
-mkdir -Force $acsConnectorLocalFeedFolder 2>> "$logFile" | Out-Null
+if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "mkdir $acsConnectorLocalFeedFolder\localfeed"}
+mkdir $acsConnectorLocalFeedFolder\localfeed 2>> "$logFile" | Out-Null
 
-& $NuGetFullPath delete ACSAgentHubSDK $connectorPackageVersion -Source $acsConnectorLocalFeedFolder -NonInteractive 2>> "$logFile" | Out-Null
-& $NuGetFullPath delete ACSConnector $connectorPackageVersion -Source $acsConnectorLocalFeedFolder -NonInteractive 2>> "$logFile" | Out-Null
+& $NuGetFullPath delete ACSAgentHubSDK $connectorPackageVersion -Source $acsConnectorLocalFeedFolder\localfeed -NonInteractive 2>> "$logFile" | Out-Null
+& $NuGetFullPath delete ACSConnector $connectorPackageVersion -Source $acsConnectorLocalFeedFolder\localfeed -NonInteractive 2>> "$logFile" | Out-Null
 
 # Next, clear all NuGet caches in case we are overwriting existing versions of existing NuGet packages (this can cause runtime startup issues in Composer)
 #& $NuGetFullPath locals all -clear 2>> "$logFile" | Out-Null
 
 # Next, add ACSConnector and its dependencies to local NuGet feed
-if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath add $acsConnectorNuGetPackage -Source $acsConnectorLocalFeedFolder" }
-& $NuGetFullPath add $acsConnectorNuGetPackage -Source $acsConnectorLocalFeedFolder 2>> "$logFile" | Out-Null
-if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath add $acsAgentHubSDKNuGetPackage -Source $acsConnectorLocalFeedFolder" }
-& $NuGetFullPath add $acsAgentHubSDKNuGetPackage -Source $acsConnectorLocalFeedFolder 2>> "$logFile" | Out-Null
+if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath add $acsConnectorNuGetPackage -Source $acsConnectorLocalFeedFolder\localfeed" }
+& $NuGetFullPath add $acsConnectorNuGetPackage -Source $acsConnectorLocalFeedFolder\localfeed 2>> "$logFile" | Out-Null
+if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath add $acsAgentHubSDKNuGetPackage -Source $acsConnectorLocalFeedFolder\localfeed" }
+& $NuGetFullPath add $acsAgentHubSDKNuGetPackage -Source $acsConnectorLocalFeedFolder\localfeed 2>> "$logFile" | Out-Null
 
 Write-Host " - Done." -ForegroundColor Green
 

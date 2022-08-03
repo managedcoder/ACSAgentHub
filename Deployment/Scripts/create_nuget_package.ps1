@@ -74,22 +74,22 @@ $startTime = Get-Date
 Write-Host "Creating local NuGet feed for ACSConnector" -NoNewline -ForegroundColor Green
 $acsConnectorNuGetPackage = Join-Path $PSScriptRoot ..\..\ "ACSConnector\bin\Debug\ACSConnector.$connectorPackageVersion.nupkg" -Resolve
 $acsAgentHubSDKNuGetPackage = Join-Path $PSScriptRoot ..\.. "ACSAgentHubSDK\bin\Debug\ACSAgentHubSDK.$connectorPackageVersion.nupkg" -Resolve
-$acsConnectorLocalFeedFolder = join-Path $PSScriptRoot ..\..\ "ACSConnector\localFeed" -Resolve
+$acsConnectorLocalFeedFolder = join-Path $PSScriptRoot ..\..\ "ACSConnector" -Resolve
 # First, create folder for local NuGet feed
-if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "mkdir -Force $acsConnectorLocalFeedFolder"}
-mkdir -Force $acsConnectorLocalFeedFolder 
+if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "mkdir -Force $acsConnectorLocalFeedFolder\localfeed"}
+mkdir $acsConnectorLocalFeedFolder\localfeed
 
-if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath delete ACSAgentHubSDK $connectorPackageVersion -Source $acsConnectorLocalFeedFolder -NonInteractive " }
-& $NuGetFullPath delete ACSAgentHubSDK $connectorPackageVersion -Source $acsConnectorLocalFeedFolder -NonInteractive
-if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath delete ACSConnector $connectorPackageVersion -Source $acsConnectorLocalFeedFolder -NonInteractive " }
-& $NuGetFullPath delete ACSConnector $connectorPackageVersion -Source $acsConnectorLocalFeedFolder -NonInteractive 
+if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath delete ACSAgentHubSDK $connectorPackageVersion -Source $acsConnectorLocalFeedFolder\localfeed -NonInteractive " }
+& $NuGetFullPath delete ACSAgentHubSDK $connectorPackageVersion -Source $acsConnectorLocalFeedFolder\localfeed -NonInteractive
+if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath delete ACSConnector $connectorPackageVersion -Source $acsConnectorLocalFeedFolder\localfeed -NonInteractive " }
+& $NuGetFullPath delete ACSConnector $connectorPackageVersion -Source $acsConnectorLocalFeedFolder\localfeed -NonInteractive 
 
 # Next, clear all NuGet caches in case we are overwriting existing versions of existing NuGet packages (this can cause runtime startup issues in Composer)
 #if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath locals all -clear" }
 #& $NuGetFullPath locals all -clear
 
 # Next, add ACSConnector and its dependencies to local NuGet feed
-if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath add $acsAgentHubSDKNuGetPackage -Source $acsConnectorLocalFeedFolder" }
-& $NuGetFullPath add $acsAgentHubSDKNuGetPackage -Source $acsConnectorLocalFeedFolder 
-if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath add $acsConnectorNuGetPackage -Source $acsConnectorLocalFeedFolder" }
-& $NuGetFullPath add $acsConnectorNuGetPackage -Source $acsConnectorLocalFeedFolder
+if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath add $acsAgentHubSDKNuGetPackage -Source $acsConnectorLocalFeedFolder\localfeed" }
+& $NuGetFullPath add $acsAgentHubSDKNuGetPackage -Source $acsConnectorLocalFeedFolder\localfeed 
+if ($showCommands.ToLower() -eq "true") {Write-Host ''; Write-Host "$NuGetFullPath add $acsConnectorNuGetPackage -Source $acsConnectorLocalFeedFolder\localfeed" }
+& $NuGetFullPath add $acsConnectorNuGetPackage -Source $acsConnectorLocalFeedFolder\localfeed
