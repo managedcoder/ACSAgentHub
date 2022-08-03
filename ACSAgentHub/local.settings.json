@@ -3,11 +3,11 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
-    "agentHubStorageConnectionString": "DefaultEndpointsProtocol=https;EndpointSuffix=core.windows.net;AccountName=acsagenthubrhw;AccountKey=zPARow+zF74cCGlsfiQE9rMDSE4I7iTteDqNyuPbmk8p2g57LbYITrH6P9OoP3enPm2R5OgU6Y0Q+AStKFFQ4A==",
-    "acsConnectionString": "endpoint=https://acsagenthubrhwacs.communication.azure.com/;accesskey=GK23bSvJMBQUqXpwUit84nLlyhCQg3unqP0PiNCw23VXCe/khyjD112xPfwO92rHzLdcgsZWQWYxNt11eMXfyw==",
-    "botBaseAddress": "http://localhost:3980/",
+    "agentHubStorageConnectionString": "",
+    "acsConnectionString": "",
+    "botBaseAddress": "http://localhost:3978/",
     "useACSManagedIdentity": "false",
-    "webPusSubConnectionString": "Endpoint=https://acsagenthubrhwwps.webpubsub.azure.com;AccessKey=1uzqaDhRx4xCesM8Qg9E5hZU44Y0OfybHaq6Hj0m0qA=;Version=1.0;",
+    "webPusSubConnectionString": "",
     "webPubSubHubName": "refreshConversations"
   },
   "Host": {
