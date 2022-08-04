@@ -64,7 +64,8 @@ to run the sample app and try out all the escalation scenarios shown in this [de
 The deployment script does require that you've taking care of the [prerequisites](#Prerequisites) or it will fail.
 
 #### 1) **Clone the ACS Agent Hub Repo**  
->Open PowerShell and run the following command:  
+>Create a project folder and the open PowerShell and change directory to the project folder you just created and
+run the following command:  
 &nbsp;  
 ```
 git clone https://github.com/managedcoder/ACSAgentHub
@@ -121,7 +122,7 @@ sense for your bot<br>
 ![High-level Subsystem Overview](doc/EscalateAction.png)
 #### 4) **Set Escalation Action Properties**  
 >Paste the following escalation payload into the **Context** property of escalation action and set **Transcription**
-to ```=null```:<br>
+to ```=null```<br>
 ```
 {
   "Skill": "offshore accounts",
