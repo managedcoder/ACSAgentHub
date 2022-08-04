@@ -64,7 +64,7 @@ to run the sample app and try out all the escalation scenarios shown in this [de
 The deployment script does require that you've taking care of the [prerequisites](#Prerequisites) or it will fail.
 
 #### 1) **Clone the ACS Agent Hub Repo**  
->Create a project folder and the open PowerShell and change directory to the project folder you just created and
+>Create a project folder and then open PowerShell and change directory to the project folder you just created and
 run the following command:  
 &nbsp;  
 ```
