@@ -102,6 +102,14 @@ when the bot finishes it's startup processing.  Type, _**talk to human**_ to sta
 a short [demo video](http://add-demo-here) you can watch that shows all these steps and various escalation and agent
 management scenaios you can replicate using this sample app.
 
+### <a name="DemoingPostDeployment"></a>Demoing ACSAgentHub in the Future
+The deployment scripts actually did two things: 1) Deploy the Azure services the ACSAgentHub requires and 2) configured
+and launched the runtime environment needed to demo the ACSAgentHub.  In the future, you'll only need to configure and
+launch the runtime which you can do by running this command in PowerShell the root solution folder (i.e., the one
+that contains the ACSAgentHub.sln file):  
+&nbsp;  
+`.\Deployment\Scripts\deploy_and_configure.ps1 -hubName <hub name> -resourceGroup <hub resource group> -ngrokFullPath <ngrok path> -configurationOnly true`
+
 ### <a name="AddingEscalationToYourBot"></a>Adding Escalation to Your Bot
 The samples are nice for quickly experimenting with escalation and taking a look at how it's coded, but they don't 
 address how to add escalation to bots.  The good news is that adding agent escalation to a Composer bot is very 
