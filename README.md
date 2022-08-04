@@ -111,6 +111,10 @@ that contains the ACSAgentHub.sln file):
 ```
 .\Deployment\Scripts\deploy_and_configure.ps1 -hubName <hub name> -resourceGroup <hub resource group> -ngrokFullPath <ngrok path> -configurationOnly true
 ```
+where:
+- **\<hub name>** is the name of your agent hub you provided when you initially deployed the ACSAgentHub
+- **\<resource group>** is the name of the resource group you provided when you initially deployed the ACSAgentHub
+- **\<ngrok path>** is the full path to the ngrok.exe (e.g., c:\nuget\ngrok.exe)
 
 ### <a name="AddingEscalationToYourBot"></a>Adding Escalation to Your Bot
 The samples are nice for quickly experimenting with escalation and taking a look at how it's coded, but they don't 
