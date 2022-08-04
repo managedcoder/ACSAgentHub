@@ -63,15 +63,17 @@ Getting started couldn't be easier.  Simply clone the repo and run a deployment 
 to run the sample app and try out all the escalation scenarios shown in this [demo video](http://add-demo-here).
 The deployment script does require that you've taking care of the [prerequisites](#Prerequisites) or it will fail.
 
-1) **Clone the ACS Agent Hub Repo**  
-Open PowerShell and run the following command:
+#### 1) **Clone the ACS Agent Hub Repo**  
+>Open PowerShell and run the following command:  
+&nbsp;  
 ```
 git clone https://github.com/managedcoder/ACSAgentHub
 ```
-2) **Deploy ACS Agent Hub**  
-In PowerShell, change the current directory to the root solution folder (i.e., the one
+#### 2) **Deploy ACS Agent Hub**  
+>In PowerShell, change the current directory to the root solution folder (i.e., the one
 that contains the ACSAgentHub.sln file). Then run the following script to deploy and
-configure all the services required by the ACS Agent Hub:
+configure all the services required by the ACS Agent Hub:  
+&nbsp;  
 ```
 .\Deployment\Scripts\deploy_and_configure.ps1 -hubName <hub name> -resourceGroup <resource group> -ngrokFullPath <ngrok path> -location <location name> -NuGetFullPath <nuget path>
 ```
@@ -83,8 +85,8 @@ other services created by this script
 - **\<location name>** is the Azure location name of the region that services will be deployed in (e.g., eastus)
 - **\<nuget path>** is the full path to the nuget.exe (e.g., c:\nuget\nuget.exe)
 
-### <a name="ExploreEscalationScenarios"></a>Explore Escalation Scenarios
-To make it easy for you to quickly experiment with the ACS Agent Hub we've included sample applications that are all
+#### 3) **<a name="ExploreEscalationScenarios"></a>Explore Escalation Scenarios**  
+>To make it easy for you to quickly experiment with the ACS Agent Hub we've included sample applications that are all
 ready to go.  All you need to do to try it out is to open the Bot Framework Composer and select the **Open** link on
 the Home tab and open the ComposerExample that's in the root folder of the solution. This is a very simple bot with 
 an Escalate trigger that you can look at to see how to code an escalation and then try it out by using the 
@@ -98,12 +100,14 @@ The samples are nice for quickly experimenting with escalation and taking a look
 address how to add escalation to bots.  The good news is that adding agent escalation to a Composer bot is very 
 simple and only involves a few steps.  These following steps are shown in a very short video [here](http://adding-escalation-=video)
 that you might find easier to follow.
-1) **Install Agent Hub Package** - First, create a local feed and set its URL property to the full path of the
+#### 1) **Install Agent Hub Package**  
+>First, create a local feed and set its URL property to the full path of the
 .\ACSConnector\localFeed folder so Composer will know where find the package and second, add the ACSConnector package
 to your bot as shown in the following screen shots, respectively<br>
 ![High-level Subsystem Overview](doc/CreatingLocalFeed.png)<br>
 ![High-level Subsystem Overview](doc/InstallingACSConnector.png)
-2) **Set App Setting** - Paste the following at the top of the bot's appsettings.json file:<br>
+#### 2) **Set App Setting**  
+>Paste the following at the top of the bot's appsettings.json file:<br>
 ```
   "ACSConnector": {
     "acsAgentHubBaseAddress": "http://localhost:7071"
@@ -111,10 +115,12 @@ to your bot as shown in the following screen shots, respectively<br>
 ```
 ![High-level Subsystem Overview](doc/AppSettings.png)
 
-3) **Add an Escalation Action** - Add a _**Send handoff activity**_ action to any dialog and at wherever point makes
+#### 3) **Add an Escalation Action**  
+>Add a _**Send handoff activity**_ action to any dialog and at wherever point makes
 sense for your bot<br> 
 ![High-level Subsystem Overview](doc/EscalateAction.png)
-4) **Set Escalation Action Properties** - Paste the following escalation payload into the **Context** property of escalation action and set **Transcription**
+#### 4) **Set Escalation Action Properties**  
+>Paste the following escalation payload into the **Context** property of escalation action and set **Transcription**
 to ```=null```:<br>
 ```
 {
