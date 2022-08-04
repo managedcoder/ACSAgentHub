@@ -5,7 +5,7 @@ const { WebPubSubServiceClient, Event } = require('@azure/web-pubsub');
 
 export async function subscribeToRefreshEvents(connectionString: string, hub: string, msgHandler: ((this: WebSocket, ev: MessageEvent) => any) | null) {
     let serviceClient = new WebPubSubServiceClient(connectionString, hub);
-    let token = await serviceClient.getAuthenticationToken();
+    let token = await serviceClient.getClientAccessToken();
     let webSocket = new WebSocket(token.url);
 
     try {
