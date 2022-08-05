@@ -6,7 +6,7 @@ allows multiple agents to handle multiple simultaneous conversations with bot us
 Services, you can have an agent escalation capability up and working in 10 minutes or so.  Take a look at this short [ACS
 Agent Hub overview video](https://aka.ms/acshub-overview) and if that sounds interesting then check out this
 [getting started video](https://aka.ms/acshub-start) to see how easy it is to get this solution up and rnning.  You can
-see a deeper dive [multi-agent demonstation video](https://youtu.be/zSs0WCvfEiA) to get a sense of full capability of this solution.
+see a deeper dive [multi-agent demonstation video](https://aka.ms/acshub-v1demo) to get a sense of full capability of this solution.
 
 ### <a name="Prerequisites"></a>Prerequisites
 
@@ -104,8 +104,9 @@ the Home tab and open the ComposerExample that's in the root folder of the solut
 an Escalate trigger that you can look at to see how to code an escalation and then try it out by using the 
 **Start bot** command.  After the bot starts, choose the **Open Web Chat** option in the flyout menu that appears
 when the bot finishes it's startup processing.  Type, _**talk to human**_ to start an escalation experience.  There's
-a short [demo video](http://aka.ms/acshub-start?t=119) you can watch that shows all these steps and various escalation and agent
-management scenaios you can replicate using this sample app.
+a short [demo video](http://aka.ms/acshub-start?t=119) you can watch that shows all these steps and how to demo the 
+agent escalation scenario.  You can also take a look at a [fuller multi-agent demo](https://aka.ms/acshub-v1demo) if 
+your interested.
 
 ### <a name="RestartingRuntime"></a>Restarting the ACSAgentHub runtime environment
 In the future, to restart the ACSAgentHub runtime after it's been shutdown, you'll need to run this command in
