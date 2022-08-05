@@ -3,7 +3,10 @@ This package integrates with a ready-made agent hub solution built on the Azure 
 add human handoff experiences to your bot. Super simple to use, just add a Send Handoff Activity to your dialog and the
 ACSConnector takes care of the rest. Escalations will be sent to a ready-made agent hub that you clone from GitHub which
 allows multiple agents to handle multiple simultaneous conversations with bot users. Because it’s built purely from Azure
-Services, you can have an agent escalation capability up and working in 15 minutes or so.
+Services, you can have an agent escalation capability up and working in 10 minutes or so.  Take a look at this short [ACS
+Agent Hub overview video](https://aka.ms/acshub-overview) and if that sounds interesting then check out this
+[getting started video](https://aka.ms/acshub-start) to see how easy it is to get this solution up and rnning.  You can
+see a deeper dive [multi-agent demonstation video](https://youtu.be/zSs0WCvfEiA) to get a sense of full capability of this solution.
 
 ### <a name="Prerequisites"></a>Prerequisites
 
@@ -66,8 +69,10 @@ Composer sample included in this solution and to do that you'll need to install 
 ### <a name="GettingStarted"></a>Getting Started
 
 Getting started couldn't be easier.  Simply clone the repo and run a deployment script and you're ready
-to run the sample app and try out all the escalation scenarios shown in this [demo video](http://add-demo-here).
-The deployment script does require that you've taking care of the [prerequisites](#Prerequisites) or it will fail.
+to run the sample app and try out agent escalation.  You can take a look at this 
+[getting started video](https://aka.ms/acshub-start) to see step-by-step instructions for getting this
+solution up and running.  Please note that the deployment script in that video requires that you've taking
+care of the [prerequisites](#Prerequisites) or it will fail.
 
 #### 1) **Clone the ACS Agent Hub Repo**  
 >Open PowerShell and change to the directory where you want the project folder to be created and
@@ -99,14 +104,13 @@ the Home tab and open the ComposerExample that's in the root folder of the solut
 an Escalate trigger that you can look at to see how to code an escalation and then try it out by using the 
 **Start bot** command.  After the bot starts, choose the **Open Web Chat** option in the flyout menu that appears
 when the bot finishes it's startup processing.  Type, _**talk to human**_ to start an escalation experience.  There's
-a short [demo video](http://add-demo-here) you can watch that shows all these steps and various escalation and agent
+a short [demo video](http://aka.ms/acshub-start?t=119) you can watch that shows all these steps and various escalation and agent
 management scenaios you can replicate using this sample app.
 
-### <a name="DemoingPostDeployment"></a>Demoing ACSAgentHub in the Future
-The deployment scripts actually did two things: 1) Deploy the Azure services the ACSAgentHub requires and 2) configured
-and launched the runtime environment needed to demo the ACSAgentHub.  In the future, you'll only need to configure and
-launch the runtime which you can do by running this command in PowerShell in the root solution folder (i.e., the one
-that contains the ACSAgentHub.sln file):  
+### <a name="RestartingRuntime"></a>Restarting the ACSAgentHub runtime environment
+In the future, to restart the ACSAgentHub runtime after it's been shutdown, you'll need to run this command in
+PowerShell in the root solution folder (i.e., the one that contains the ACSAgentHub.sln file).  When it finishes,
+the runtime environment will be ready to use just like it was after it was initially deployed.  
 &nbsp;  
 ```
 .\Deployment\Scripts\deploy_and_configure.ps1 -hubName <hub name> -resourceGroup <hub resource group> -ngrokFullPath <ngrok path> -configurationOnly true
